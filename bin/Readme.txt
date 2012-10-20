@@ -1,4 +1,9 @@
 ----Milestone 1 - Game of Zuul-----
+ 
+19/10 -- Set up a working version of Repositories -Chuan
+please make sure 
+    every time before you leave Eclipse commit whatever you have down unless you are woking on a branch.
+    every time before you edit your file do "Pull" to update your file.
 
 18/10 - How to commit the changes you have made ?
 1. Right click on SYSC3110-Game-Of-Zuul-M1 [SYSC3110-Game-Of-Zuul-M1 master] project
