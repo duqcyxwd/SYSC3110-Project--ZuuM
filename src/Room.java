@@ -1,6 +1,4 @@
-import java.util.Set;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Class Room - a room in an adventure game.
@@ -9,17 +7,18 @@ import java.util.Iterator;
  * "World of Zuul" is a very simple, text based adventure game.  
  *
  * A "Room" represents one location in the scenery of the game.  It is 
- * connected to other rooms via exits.  For each existing exit, the room 
- * stores a reference to the neighboring room.
+ * connected to other rooms via exits.  The exits are labelled north, 
+ * east, south, west.  For each direction, the room stores a reference
+ * to the neighboring room, or null if there is no exit in that direction.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2011.08.10
+ * @author  Michael Kolling and David J. Barnes
+ * @version 2008.03.30
  */
-
 public class Room 
 {
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private Map<String,Room> exits;
+    private Map<String,Item> items;
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,62 +30,90 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<String, Room>();
+        items = new HashMap<String, Item>();
     }
 
     /**
-     * Define an exit from this room.
-     * @param direction The direction of the exit.
-     * @param neighbor  The room to which the exit leads.
+     * Define the exits of this room.  Every direction either leads
+     * to another room or is null (no exit there).
+     * @param north The north exit.
+     * @param east The east east.
+     * @param south The south exit.
+     * @param west The west exit.
      */
-    public void setExit(String direction, Room neighbor) 
+    public void setExit(Room room, String direction) 
     {
-        exits.put(direction, neighbor);
+        exits.put(direction, room);
     }
 
     /**
-     * @return The short description of the room
-     * (the one that was defined in the constructor).
+     * @return The description of the room.
      */
-    public String getShortDescription()
+    public String getDescription()
     {
         return description;
     }
-
+    
     /**
-     * Return a description of the room in the form:
-     *     You are in the kitchen.
-     *     Exits: north west
-     * @return A long description of this room
+     * returns the Room object associated which a given exit string
      */
-    public String getLongDescription()
-    {
-        return "You are " + description + ".\n" + getExitString();
+    public Room getExit(String exit){
+        return (Room)exits.get(exit);
     }
-
+    
     /**
-     * Return a string describing the room's exits, for example
-     * "Exits: north west".
-     * @return Details of the room's exits.
+     * returns the string object associated with a certain object name (string)
      */
-    private String getExitString()
-    {
-        String returnString = "Exits:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys) {
-            returnString += " " + exit;
-        }
-        return returnString;
+    public Item getItem(String item){
+        return (Item)items.get(item);
     }
-
+    
     /**
-     * Return the room that is reached if we go from this room in direction
-     * "direction". If there is no room in that direction, return null.
-     * @param direction The exit's direction.
-     * @return The room in the given direction.
+     * @return Returns the string representation of 
+     * the list of all exits for this room
      */
-    public Room getExit(String direction) 
-    {
-        return exits.get(direction);
+    public String getExitString(){
+        String s="";
+        for(Object direction : exits.keySet())
+            s += direction + " ";
+        return s;
     }
+    
+   /**
+    * Returns description of room (what room you`re in
+    * what exits and the items in it )
+    */
+   public String getLongDescription()
+   {
+      String s = "";
+      if( items.size() > 0)
+          for( String item : items.keySet())
+              s += item + " ";
+      else
+          s = "none";
+      return "You are " + description + ".\n" + "Exits: " + 
+                getExitString() + ". The items in the room are : " + s ;
+   }
+   
+   /**
+    * Add items to room
+    *
+    * @param  accepts an item 
+    */
+   public void addItem(Item item)
+   {
+       items.put(item.getDescription(),item);
+   }
+   
+   /**
+    * Remove items from room
+    * @param  accepts an item 
+    */
+   public void removeItem(String description)
+   {
+       items.remove(description);
+   }
+   
+   
+
 }
-
