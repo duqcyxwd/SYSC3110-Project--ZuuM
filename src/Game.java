@@ -22,6 +22,7 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private Stack<Room> moves;
+    private Command lastCommand;  ///save the last command you did and it is using for redo
     private List<Item> inventory;
 	public Room outside, theatre, pub, lab, office, cafe, basement;
     //Monster Variables
@@ -108,6 +109,9 @@ public class Game
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
+            if(!command.getCommandWord().equals("redo")) {
+                lastCommand = command;
+            }
             finished = processCommand(command);
         }
         System.out.println("Thank you for playing.  Good bye.");
@@ -158,6 +162,11 @@ public class Game
             }
             else
                 System.out.println("No where to go back to.");
+        }
+        else if (commandWord.equals("redo")){   // redo the last commands. 
+            System.out.println("doing the last command");
+            processCommand(lastCommand);
+
         }
         else if (commandWord.equals("pick"))
             pick(command);
