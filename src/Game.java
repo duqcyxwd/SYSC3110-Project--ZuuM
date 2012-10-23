@@ -86,12 +86,12 @@ public class Game
     private void addMonstersToRoom()
 	{
 		Random r = new Random();		
-		this.theatre.add_number_of_monster(r.nextInt(2));
-		this.pub.add_number_of_monster(r.nextInt(2));
-		this.cafe.add_number_of_monster(r.nextInt(1));
-		this.lab.add_number_of_monster(r.nextInt(3));
-		this.basement.add_number_of_monster(r.nextInt(2));
-		this.office.add_number_of_monster(r.nextInt(2));
+		this.theatre.set_number_of_monster(r.nextInt(2));
+		this.pub.set_number_of_monster(r.nextInt(2));
+		this.cafe.set_number_of_monster(r.nextInt(1));
+		this.lab.set_number_of_monster(r.nextInt(3));
+		this.basement.set_number_of_monster(r.nextInt(2));
+		this.office.set_number_of_monster(r.nextInt(2));
 	}
 
 
