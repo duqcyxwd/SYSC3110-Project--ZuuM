@@ -23,6 +23,10 @@ public class Game
     private Room currentRoom;
     private Stack<Room> moves;
     private List<Item> inventory;
+	public Room outside, theatre, pub, lab, office, cafe, basement;
+    //Monster Variables
+	private Map<Room, ArrayList<Monster>> monsters; // Will be used later
+	private HashMap<Monster,Room> monster_map; 
         
     /**
      * Create the game and initialise its internal map.
@@ -40,8 +44,7 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theatre, pub, lab, office, cafe, basement;
-      
+             
         // create the rooms
         outside = new Room("outside the main entrance of the university");
         theatre = new Room("in a lecture theatre");
@@ -69,12 +72,28 @@ public class Game
         cafe.addItem(new Item("coffee", 1));
         cafe.addItem(new Item("sandwich", 2));
        
+      //Adding monsters to rooms
+       addMonstersToRoom(); //randomly adds monsters to all room 
+        
         //initialize moves (for 'back' command as a stack with the first element as the first room)
         moves = new Stack<Room>();
         currentRoom = outside;  // start game outside
         moves.push(currentRoom);
 
     }
+    
+    //Randomly adds monsters to all room
+    private void addMonstersToRoom()
+	{
+		Random r = new Random();		
+		this.theatre.add_number_of_monster(r.nextInt(2));
+		this.pub.add_number_of_monster(r.nextInt(2));
+		this.cafe.add_number_of_monster(r.nextInt(1));
+		this.lab.add_number_of_monster(r.nextInt(3));
+		this.basement.add_number_of_monster(r.nextInt(2));
+		this.office.add_number_of_monster(r.nextInt(2));
+	}
+
 
     /**
      *  Main play routine.  Loops until end of play.
@@ -235,13 +254,7 @@ public class Game
             
            
      }
-     
-	 public static void main(String[] args) {
-		 Game g = new Game();
-		 g.play();
-		 
-	 }
-     
+
         
         
     
