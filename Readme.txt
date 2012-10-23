@@ -1,6 +1,14 @@
 ----Milestone 1 - Game of Zuul-----
  
 
+22/19 -- add redo method to file.
+		 add AllTests.java & RoomTest.java
+	things need to improve: 	 
+     	1. "undo" need to be improve 
+		2.  need to change method tobe private
+		3.  change direction and item by using enum and save it into other data structure 
+		 
+
 22/10 -- Added Monsters to the Game :) 
 		 - Nishant
 
