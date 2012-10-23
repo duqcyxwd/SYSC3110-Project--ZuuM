@@ -101,9 +101,7 @@ public class Room {
         items.remove(description);
     }
 
-    public Room getExit(String exit) {
-        return(Room) exits.get(exit);
-    }
+
 
     /**
      * Define the exits of this room.  Every direction either leads
@@ -117,6 +115,10 @@ public class Room {
         exits.put(direction, room);
     }
 
+    public Room getExit(String exit) {
+        return(Room) exits.get(exit);
+    }
+    
     /**
      * @return Returns the string representation of
      * the list of all exits for this room
