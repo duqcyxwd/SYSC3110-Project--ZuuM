@@ -1,7 +1,7 @@
 ----Milestone 1 - Game of Zuul-----
  
 
-22/19 -- add redo method to file.
+22/19 -- add redo method to file.   -chuan
 		 add AllTests.java & RoomTest.java
 	things need to improve: 	 
      	1. "undo" need to be improve 
