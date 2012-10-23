@@ -1,5 +1,7 @@
 ----Milestone 1 - Game of Zuul-----
  
+22/10 -- Adding Monsters to the game - Nishant
+
 19/10 -- Set up a working version of Repositories -Chuan
 please make sure 
     every time before you leave Eclipse commit whatever you have down unless you are woking on a branch.
