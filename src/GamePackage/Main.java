@@ -1,3 +1,4 @@
+package GamePackage;
 /*
  * Main class which is used to run and play game.
  */

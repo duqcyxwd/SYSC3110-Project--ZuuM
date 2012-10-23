@@ -1,3 +1,5 @@
+package GamePackage;
+import Testing.RoomTest;
 import junit.framework.*;
 
 public class AllTests extends TestSuite {

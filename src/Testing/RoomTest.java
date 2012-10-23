@@ -1,3 +1,5 @@
+package Testing;
+
 
 import static org.junit.Assert.*;
 
@@ -6,6 +8,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import GamePackage.Item;
+import GamePackage.Room;
 
 
 //public class RoomTest extends Room {

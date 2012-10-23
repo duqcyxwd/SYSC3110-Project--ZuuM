@@ -1,3 +1,4 @@
+package GamePackage;
 
 /**
  * The item class represents items which have a description and a wait
