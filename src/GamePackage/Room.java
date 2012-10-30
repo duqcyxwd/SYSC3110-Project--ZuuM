@@ -12,9 +12,10 @@ import java.util. * ;
  * east, south, west.  For each direction, the room stores a reference
  * to the neighboring room, or null if there is no exit in that direction.
  *
- * @author  Michael Kolling and David J. Barnes
- * @version 2008.03.30
+ * @author Bruno Colantonio, Nishant Bhasin, Mohamed Ahmed, Yongquinchuan Du 
+ * @version Oct 23rd, 2012
  */
+
 public class Room {
     private String description;
     private Map < String, Room > exits;
@@ -33,37 +34,28 @@ public class Room {
         mon_list = new ArrayList < Monster > (); // List of monsters in the room
     }
 
-    /*
+    /**
      * Function to add n number of monsters to this room
      */
     public void set_number_of_monster(int n) {
-        if(this.mon_list.isEmpty()) {
-            for(int i = 0; i < n; i++) {
-                mon_list.add(new Monster(this, this.description));
-            }
-        } else {
-            this.mon_list.clear();
-            for(int i = 0; i < n; i++) {
-                mon_list.add(new Monster(this, this.description));
-            }
+    	for(int i = 0; i < n; i++) {
+    		mon_list.add(new Monster(this, this.description)); // add a new monster n times
         }
     }
-
-    /*
+    /**
      * Function to add monster to this room
      */
     public void addMonster() {
-        mon_list.add(new Monster(this, this.description));
-        //monsters.put(this, mon_list);
+        mon_list.add(new Monster(this, this.description)); // add a single new monster
     }
 
-    /*
+    /**
      * Function to getMonsters in this room
      * It returns the number of monsters present in this
      * room.
      */
     public int getMonster() {
-        return mon_list.size();
+        return mon_list.size(); // returns number of monsters in room
     }
 
     /**
@@ -136,23 +128,22 @@ public class Room {
      * what exits and the items in it )
      */
     public String getLongDescription() {
-        String s = "";
-        String q = "";
-        if(items.size() > 0) for(String item: items.keySet())
-        s += item + " ";
-        else s = "none";
+        String itemsString = "";
+        String ld = "";
+        if(items.size() > 0) for(String item: items.keySet()) //if items is not empty, it adds the items to a String
+        	itemsString += item + " ";
+        else itemsString = "none";
 
+        ld = ld + "You are " + description + ".\n" + "Exits: " + getExitString() + ". The items in the room are : " + itemsString + "\n";
+        
         if(!mon_list.isEmpty()) {
-            q = q + "Monster Alert !! " + mon_list.size() + " Monsters in room." + "\nYou are " + description + ".\n" + "Exits: " + getExitString() + ". The items in the room are : " + s + "\n";
-        } else {
-            q = q + "You are " + description + ".\n" + "Exits: " + getExitString() + ". The items in the room are : " + s + "\n";
-
-        }
-
-
-        return q;
+        	ld = "Monster Alert !! " + mon_list.size() + " Monsters in room." + "\n" + ld;
+        } 
+        return ld;
     }
 
-
+    public String toString(){ // returns description of the room
+    	return description;
+    }
 
 }

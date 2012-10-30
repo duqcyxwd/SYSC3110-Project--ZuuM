@@ -1,4 +1,6 @@
-package GamePackage;
+package Testing;
+
+
 import Testing.RoomTest;
 import junit.framework.*;
 

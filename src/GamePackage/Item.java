@@ -3,11 +3,10 @@ package GamePackage;
 /**
  * The item class represents items which have a description and a wait
  * a room can contain a few items
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Bruno Colantonio, Nishant Bhasin, Mohamed Ahmed, Yongquinchuan Du 
+ * @version Oct 23rd, 2012
  */
-public class Item
-{
+public class Item{
     // instance variables - replace the example below with your own
     private String description;
     private int weight;
@@ -15,22 +14,20 @@ public class Item
     /**
      * Constructor for objects of class Items
      */
-    public Item(String description, int weight)
-    {
+    public Item(String description, int weight){
         this.description = description;
         this.weight = weight;
     }
 
     /**
-     * @return the weight 
+     * @return the weight of the Item
      */
-    public int getWeight()
-    {
+    public int getWeight(){
        return weight;
     }
     
     /**
-     * return the description
+     * return the description of the Item
      */
     public String getDescription(){
         return description;

@@ -6,8 +6,8 @@ package GamePackage;
  * This class holds an enumeration of all command words known to the game.
  * It is used to recognise commands as they are typed in.
  *
- * @author  Michael Kolling and David J. Barnes
- * @version 2008.03.30
+ * @author Bruno Colantonio, Nishant Bhasin, Mohamed Ahmed, Yongquinchuan Du 
+ * @version Oct 23rd, 2012
  */
 
 public class CommandWords
@@ -15,14 +15,13 @@ public class CommandWords
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
         "go", "quit", "help", "look", "pick", 
-        "inventory", "back(undo)", "redo" 
+        "inventory", "undo", "redo" 
     };
 
     /**
      * Constructor - initialize the command words.
      */
-    public CommandWords()
-    {
+    public CommandWords(){
         // nothing to do at the moment...
     }
 
@@ -31,10 +30,9 @@ public class CommandWords
      * @return true if a given string is a valid command,
      * false if it isn't.
      */
-    public boolean isCommand(String aString)
-    {
+    public boolean isCommand(String aString){
         for(int i = 0; i < validCommands.length; i++) {
-            if(validCommands[i].equals(aString))
+            if(validCommands[i].equals(aString)) //iterates through validCommands and if a value equals sString return true
                 return true;
         }
         // if we get here, the string was not found in the commands

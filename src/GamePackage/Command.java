@@ -14,12 +14,12 @@ package GamePackage;
  *
  * If the command had only one word, then the second word is <null>.
  * 
- * @author  Michael Kolling and David J. Barnes
- * @version 2008.03.30
+ * @author Bruno Colantonio, Nishant Bhasin, Mohamed Ahmed, Yongquinchuan Du 
+ * @version Oct 23rd, 2012
  */
 
-public class Command
-{
+public class Command{
+	
     private String commandWord;
     private String secondWord;
 
@@ -30,8 +30,7 @@ public class Command
      *                  was not recognized.
      * @param secondWord The second word of the command.
      */
-    public Command(String firstWord, String secondWord)
-    {
+    public Command(String firstWord, String secondWord){
         commandWord = firstWord;
         this.secondWord = secondWord;
     }
@@ -41,8 +40,7 @@ public class Command
      * command was not understood, the result is null.
      * @return The command word.
      */
-    public String getCommandWord()
-    {
+    public String getCommandWord(){
         return commandWord;
     }
 
@@ -50,25 +48,29 @@ public class Command
      * @return The second word of this command. Returns null if there was no
      * second word.
      */
-    public String getSecondWord()
-    {
+    public String getSecondWord(){
         return secondWord;
     }
 
     /**
      * @return true if this command was not understood.
      */
-    public boolean isUnknown()
-    {
+    public boolean isUnknown(){
         return (commandWord == null);
     }
 
     /**
      * @return true if the command has a second word.
      */
-    public boolean hasSecondWord()
-    {
+    public boolean hasSecondWord(){
         return (secondWord != null);
+    }
+    
+    /**
+     * @return a String of the commandWord and secondWord.
+     */
+    public String toString(){
+    	return commandWord + " " + secondWord;
     }
 }
 
