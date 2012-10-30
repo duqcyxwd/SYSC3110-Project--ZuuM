@@ -1,6 +1,7 @@
 package GamePackage;
 import java.util. * ;
 
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -39,14 +40,14 @@ public class Room {
      */
     public void set_number_of_monster(int n) {
     	for(int i = 0; i < n; i++) {
-    		mon_list.add(new Monster(this, this.description)); // add a new monster n times
+    		//mon_list.add(new Monster(this, this.description)); // add a new monster n times
         }
     }
     /**
      * Function to add monster to this room
      */
     public void addMonster() {
-        mon_list.add(new Monster(this, this.description)); // add a single new monster
+       // mon_list.add(new Monster(this, this.description)); // add a single new monster
     }
 
     /**

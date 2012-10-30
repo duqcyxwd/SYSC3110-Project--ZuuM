@@ -1,5 +1,12 @@
 package GamePackage;
+
 import java.util.*;
+
+import javax.swing.ImageIcon;
+
+import GamePackage.Avatar;
+import GamePackage.Tile;
+
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -15,7 +22,7 @@ import java.util.*;
  * @version Oct 23rd, 2012
  */
 
-public class Game {
+public class Game extends Observable{
 	
     private Parser parser;
     private Room currentRoom;
@@ -28,6 +35,22 @@ public class Game {
     //Monster Variables
 	private Map<Room, ArrayList<Monster>> monsters; // Will be used later
 	private HashMap<Monster,Room> monster_map; 
+	
+	
+	protected Tile[][] playingField;
+	protected Tile[][] itemMap;
+	public static final int WIDTH = 10;
+	public static final int HEIGHT = 10;
+	
+	protected ArrayList<Avatar> movableTiles;
+	
+	protected LinkedList<Tile[][]> prevItemMaps;
+	protected LinkedList<ArrayList<Avatar>> prevMovableTiles;
+	protected int undoIndex = 0;
+	protected int undoCount = 0;
+	
+	protected static ImageIcon playerImage = new ImageIcon("img/red-tile.png");
+	protected static ImageIcon wallImage = new ImageIcon("img/black-tile.png");
         
     /**
      * Create the game and initialise its internal map.
@@ -38,6 +61,14 @@ public class Game {
         inventory = new ArrayList<Item>();        
         commands = new Stack<Command>();
         undoCommands = new Stack<Command>();
+		playingField = new Tile[HEIGHT][WIDTH];	
+		itemMap = new Tile[HEIGHT][WIDTH];
+		movableTiles = new ArrayList<Avatar>();
+		prevItemMaps = new LinkedList<Tile[][]>();
+		prevMovableTiles = new LinkedList<ArrayList<Avatar>>();
+		populateItemMap();
+		//updateUndoLists();
+		syncItemMapAndField(movableTiles);
     }
 
     /**
@@ -69,8 +100,8 @@ public class Game {
         basement.setExit(outside, "up");
         
         //Add items to rooms
-        cafe.addItem(new Item("coffee", 1));
-        cafe.addItem(new Item("sandwich", 2));
+     //   cafe.addItem(new Item("coffee", 1));
+     //   cafe.addItem(new Item("sandwich", 2));
        
       //Adding monsters to rooms
        addMonstersToRoom(); //randomly adds monsters to all room 
@@ -278,12 +309,119 @@ public class Game {
       *  Randomly decides to add monsters to all room
       */
      private void addMonstersToRoom(){
- 		Random r = new Random();		
+ 		Random r = new Random();
  		this.theatre.set_number_of_monster(r.nextInt(2));
  		this.pub.set_number_of_monster(r.nextInt(2));
  		this.cafe.set_number_of_monster(r.nextInt(1));
  		this.lab.set_number_of_monster(r.nextInt(3));
  		this.basement.set_number_of_monster(r.nextInt(2));
  		this.office.set_number_of_monster(r.nextInt(2));
+ 	} 
+     
+     public int getWidth(){
+ 		return WIDTH;
  	}
+ 	
+ 	public int getHeight(){
+ 		return HEIGHT;
+ 	}
+ 	
+ 	public Item getItem(Position position) throws IndexOutOfBoundsException{
+		if(position.getRow() < 0 || position.getRow() >= HEIGHT)
+			throw new IndexOutOfBoundsException("Row out of bounds."+position.getRow());
+		else if(position.getCol() < 0 || position.getCol() >= WIDTH)
+			throw new IndexOutOfBoundsException("Col out of bounds"+position.getCol());
+		else {
+			if (itemMap[position.getRow()][position.getCol()] instanceof Item)
+				return (Item) itemMap[position.getRow()][position.getCol()];
+		} return null;
+	}
+ 	/**
+	 * Returns the tile at said position or throws an exception if the position is invalid.
+	 * @param position The position of interest
+	 * @return Tile at position, null if no item
+	 */
+	public Tile getTile(Position position) throws IndexOutOfBoundsException{
+		if(position.getRow() < 0 || position.getRow() >= HEIGHT)
+			throw new IndexOutOfBoundsException("Row out of bounds.");
+		else if(position.getCol() < 0 || position.getCol() >= WIDTH)
+			throw new IndexOutOfBoundsException("Col out of bounds");
+		else
+			return playingField[position.getRow()][position.getCol()];
+	}
+	
+	
+	public void placeItem(Item item) {
+		itemMap[item.getPosition().getRow()][item.getPosition().getCol()] = item;
+	}
+	
+	public String toString(){
+		String s = "";
+		
+		for(int i = 0; i < WIDTH; i++){
+			for(int j = 0; j < HEIGHT; j++){
+				s += " " + playingField[i][j].toString();
+			}
+			s += "\n";
+		}
+		return s;
+	}
+
+	
+	public void undoMove(){
+	}
+	
+	public void redoMove(){
+		
+	}
+	
+	protected void populateItemMap(){
+		for(int row = 0; row<HEIGHT; row++){
+		for(int col =0; col<WIDTH; col++){
+			if(row == 0 || col == 0 || row == HEIGHT-1 || col == WIDTH-1){
+				itemMap[row][col] =new Wall(new Position(row,col),this, wallImage);
+			}else{
+				itemMap[row][col] =new Tile(new Position(row,col),this);
+			}
+		}
+	}
+
+
+	movableTiles.add(new Player(new Position(3,3), this, playerImage, 1));
+
+	//movableTiles.add(new PlayerBlack(startTilesP2, this, "playerBlack"));
+	
+	}
+	
+	public void syncItemMapAndField(ArrayList<Avatar> movableTiles){
+		LinkedList<Tile> tiles = new LinkedList<Tile>();
+		for(int row = 0; row < HEIGHT; row++){
+			for(int col = 0; col < WIDTH; col++){
+				playingField[row][col] = itemMap[row][col];
+			}
+		}
+		
+		for(Avatar mt: movableTiles){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
+			// only place if alive
+			if (mt.getLives() != 0) {
+				playingField[mt.getPosition().getRow()][mt.getPosition().getCol()] = mt;
+				
+				//playingField[mT.getPosition().getRow()][mT.getPosition().getCol()] = mT; 
+			}
+		}
+		setChanged();
+		notifyObservers("update");
+	}
+
+	public void resetPlayingField() {
+	}
+
+
+	protected boolean checkWin() {
+		return false;
+	}
+
+
+	public void restartGame() {
+	}
 }

@@ -1,23 +1,24 @@
 package GamePackage;
+
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 
 /**
- * The class Monster tells current location of each monsters in 
- * the game. * 
- * @author Nishant Bhasin
+ * 
+ * 
+ * @author 
  * @version Oct 23rd, 2012
  */
 
-public class Monster extends Avatar {
+public class Player extends Avatar {
 	
 	
 	 /**
      * Constructor of the initialises location and place
      */
-	public Monster(Position position, Game game, ImageIcon image, int lives){ 
+	public Player(Position position, Game game, ImageIcon image, int lives){ 
 		super(position, game, image, lives);
 	}
 	
@@ -30,3 +31,4 @@ public class Monster extends Avatar {
 	}
 
 }
+
