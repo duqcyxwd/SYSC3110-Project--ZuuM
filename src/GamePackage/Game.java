@@ -4,6 +4,8 @@ import java.util.*;
 
 import javax.swing.ImageIcon;
 
+import GamePackage.Position;
+
 import GamePackage.Avatar;
 import GamePackage.Tile;
 
@@ -42,7 +44,7 @@ public class Game extends Observable{
 	public static final int WIDTH = 10;
 	public static final int HEIGHT = 10;
 	
-	protected ArrayList<Avatar> movableTiles;
+	protected ArrayList<Avatar> movableTile;
 	
 	protected LinkedList<Tile[][]> prevItemMaps;
 	protected LinkedList<ArrayList<Avatar>> prevMovableTiles;
@@ -63,12 +65,12 @@ public class Game extends Observable{
         undoCommands = new Stack<Command>();
 		playingField = new Tile[HEIGHT][WIDTH];	
 		itemMap = new Tile[HEIGHT][WIDTH];
-		movableTiles = new ArrayList<Avatar>();
+		movableTile = new ArrayList<Avatar>();
 		prevItemMaps = new LinkedList<Tile[][]>();
 		prevMovableTiles = new LinkedList<ArrayList<Avatar>>();
 		populateItemMap();
 		//updateUndoLists();
-		syncItemMapAndField(movableTiles);
+		syncItemMapAndField(movableTile);
     }
 
     /**
@@ -86,7 +88,7 @@ public class Game extends Observable{
         basement = new Room("in the basement");
         
         // Initialize room exits
-        outside.setExit(pub,"east");
+   /*     outside.setExit(pub,"east");
         outside.setExit(theatre,"west");
         outside.setExit(lab,"south");
         outside.setExit(cafe,"up");
@@ -97,14 +99,14 @@ public class Game extends Observable{
         lab.setExit(office,"west");
         office.setExit(lab,"east");
         cafe.setExit(outside,"down");
-        basement.setExit(outside, "up");
+        basement.setExit(outside, "up");*/
         
         //Add items to rooms
      //   cafe.addItem(new Item("coffee", 1));
      //   cafe.addItem(new Item("sandwich", 2));
        
       //Adding monsters to rooms
-       addMonstersToRoom(); //randomly adds monsters to all room 
+     //  addMonstersToRoom(); //randomly adds monsters to all room 
         
         //initialize moves (for 'back' command as a stack with the first element as the first room)
         moves = new Stack<Room>();
@@ -115,16 +117,49 @@ public class Game extends Observable{
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play(){            
-        printWelcome();
+    public void play(Position pos){      
+    	Avatar hero = movableTile.get(0);
+		
+		Position oldPosition = hero.getPosition();
+		
+		Position nextPos;
+		nextPos = hero.getNextPosition(pos);
+		
+		int nextPosRow;
+		int nextPosCol;
+		int foodCol;
+		int foodRow;
+		
+		int posRow;
+		int posCol;
+		for(int i = 1; i < movableTile.size(); i++){
 
-        boolean finished = false;
+			nextPosRow = nextPos.getRow();
+			nextPosCol = nextPos.getCol();
+			
+			foodCol = pos.getCol();
+			foodRow = pos.getRow();
+			
+			posRow = foodRow-nextPosRow;
+			posCol = foodCol-nextPosCol;
+			
+		}
+		hero.setPosition(nextPos);
+		syncItemMapAndField(movableTile);
+		if (checkWin()) {
+			setChanged();
+			notifyObservers("Congratulations: You win!");
+		}
+       // printWelcome();
+        
+
+       /* boolean finished = false;
         while (! finished) {// Enter the main command loop.  Here we repeatedly read commands and
         					// execute them until the game is over.
             Command command = parser.getCommand();
             finished = processCommand(command);
-        }
-        System.out.println("Thank you for playing.  Good bye.");
+      } */ 
+        //System.out.println("Thank you for playing.  Good bye.");
     }
 
     /**
@@ -308,7 +343,7 @@ public class Game extends Observable{
      /**
       *  Randomly decides to add monsters to all room
       */
-     private void addMonstersToRoom(){
+  /*   private void addMonstersToRoom(){
  		Random r = new Random();
  		this.theatre.set_number_of_monster(r.nextInt(2));
  		this.pub.set_number_of_monster(r.nextInt(2));
@@ -316,7 +351,7 @@ public class Game extends Observable{
  		this.lab.set_number_of_monster(r.nextInt(3));
  		this.basement.set_number_of_monster(r.nextInt(2));
  		this.office.set_number_of_monster(r.nextInt(2));
- 	} 
+ 	} */
      
      public int getWidth(){
  		return WIDTH;
@@ -387,13 +422,15 @@ public class Game extends Observable{
 	}
 
 
-	movableTiles.add(new Player(new Position(3,3), this, playerImage, 1));
+	movableTile.add(new Player(new Position(3,3), this, playerImage, 1));
 
-	//movableTiles.add(new PlayerBlack(startTilesP2, this, "playerBlack"));
+	//movableTile.add(new PlayerBlack(startTilesP2, this, "playerBlack"));
 	
 	}
 	
-	public void syncItemMapAndField(ArrayList<Avatar> movableTiles){
+	
+	
+	public void syncItemMapAndField(ArrayList<Avatar> movableTile){
 		LinkedList<Tile> tiles = new LinkedList<Tile>();
 		for(int row = 0; row < HEIGHT; row++){
 			for(int col = 0; col < WIDTH; col++){
@@ -401,7 +438,7 @@ public class Game extends Observable{
 			}
 		}
 		
-		for(Avatar mt: movableTiles){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
+		for(Avatar mt: movableTile){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
 			// only place if alive
 			if (mt.getLives() != 0) {
 				playingField[mt.getPosition().getRow()][mt.getPosition().getCol()] = mt;

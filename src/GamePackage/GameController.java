@@ -24,8 +24,8 @@ class GameController implements ActionListener {
 		Tile tile = (Tile) e.getSource();
 		try {
 			// when a button is clicked, call playTurn on the clicked position
-			//game.playTurn(tile.getPosition());
-			game.play();
+			game.play(tile.getPosition());
+			//game.play();
 		} catch (IllegalArgumentException ex) {
 			// do nothing to avoid annoying popups.
 		}

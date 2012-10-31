@@ -123,7 +123,7 @@ public class GameView implements Observer {
 			// if option 0 is chosen, start a new game
 			game.restartGame();
 			updateView();
-			game.play();
+			//game.play();
 		} else {
 			// if any other option is chosen, show game select menu
 			System.exit(0);
