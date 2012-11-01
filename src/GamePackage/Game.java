@@ -117,7 +117,10 @@ public class Game {
         if(commandWord.equals("help")){//if use enters "help" it will call printHelp() 
             printHelp();
             return false;
-        } else if(!commandsStack.equals("redo") &&  !commandsStack.equals("undo")) {
+        } 
+
+        if(!commandWord.equals("redo") &&  !commandWord.equals("undo")) {
+            System.out.println("new command enter, clear redo stack");
             commandsStackForRedo.clear();   // if there is new command submit by user, we need clean redoCommand stack
         }
         return processCommand(command);
@@ -147,19 +150,6 @@ public class Game {
             //about the current room 
             System.out.println(currentRoom.getLongDescription());
         } else if(commandWord.equals("undo")) { //if use enters "undo" 
-/*            if(moves.size() > 1) { //check to see is the moves stack has any item
-                lastCommand = commandsStack.pop();
-                if(lastCommand.getCommandWord().equals("pick")) { //if the LAST COMMAND was "pick" call unPick(Room)
-                    unPick(moves.peek()); // the parameter (moves.peek()) = a copy of the Room at the top 
-                    // of the stack which is the current room, so unPick(Room) knows
-                    // what room to add the item back
-                } else {
-                    moves.pop(); // if the LAST COMMAND was NOT "pick" pop from the moves stack
-                }
-                currentRoom = moves.peek();
-                commandsStackForRedo.push(lastCommand);
-                System.out.println(currentRoom.getLongDescription());
-            } else System.out.println("No where to go back to.");*/
             if (commandsStack.isEmpty()) {
                 System.out.println("No where to go back to");
             } else {
@@ -179,7 +169,7 @@ public class Game {
             }
         } else if(commandWord.equals("redo")) { // redo the last commands. 
             if(commandsStackForRedo.empty()) { //checks to see if undoCommands is empty
-                System.out.println("You need to undo before you can redo");
+                System.out.println("You need to undo before you can redo(redo stack is empty)");
             } else {
                 lastCommand = commandsStackForRedo.pop();
                 processCommand(lastCommand); // calls processCommand(lastCommand) with the previous command
@@ -190,6 +180,7 @@ public class Game {
             commandsStack.push(command);
 
             while(!commandsStackForRedo.isEmpty()) { // emptys undoCommand in case undo was called without a redo,
+                System.out.println("no use... but incase redo stack is not empty");
                 commandsStackForRedo.pop(); // it doesnt allow you to do redo if undo wasnt the last instruction
             }
         } else if(commandWord.equals("inventory")) {
