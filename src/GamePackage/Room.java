@@ -22,6 +22,7 @@ public class Room {
     private Map < String, Room > exits;
     private Map < String, Item > items;
     private ArrayList < Monster > mon_list; // List of monsters in the room.
+    private String name;
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -145,6 +146,15 @@ public class Room {
 
     public String toString(){ // returns description of the room
     	return description;
+    }
+    
+    public void setName(String name){
+    	this.name = name;
+    }
+    
+    public String getName(){
+		return name;
+    	
     }
 
 }

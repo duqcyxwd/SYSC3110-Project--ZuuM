@@ -87,7 +87,7 @@ public class Game extends Observable{
         cafe = new Room("in the cafe");
         basement = new Room("in the basement");
         
-        // Initialize room exits
+        // Initialise room exits
    /*     outside.setExit(pub,"east");
         outside.setExit(theatre,"west");
         outside.setExit(lab,"south");
