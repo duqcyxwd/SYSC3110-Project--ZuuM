@@ -97,7 +97,7 @@ public class RoomTest{
     public void testSetExit() {
         Room a = new Room("another room"); //add another room as exit
         String direction = "west";
-        testRoom.setExit(a, direction);
+        //testRoom.setExit(a, direction);
         assertEquals(a, testRoom.getExit(direction));
     }
 
@@ -118,9 +118,9 @@ public class RoomTest{
         String direction3 = "south";
         
         
-        testRoom.setExit(a, direction);
-        testRoom.setExit(b, direction2);
-        testRoom.setExit(c, direction3);
+       // testRoom.setExit(a, direction);
+        //testRoom.setExit(b, direction2);
+        //testRoom.setExit(c, direction3);
 
  /*       System.out.println(testRoom.getExitString());
         System.out.println(direction3 + " "+ direction2 + " "+ direction + " ");

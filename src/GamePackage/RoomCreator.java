@@ -98,7 +98,7 @@ public class RoomCreator {
 							System.out.println("this is a door");
 							for(Room next: rooms){
 								if(lineArray[3].equals(next.getName())){
-									current.setExit(next, lineArray[1] + "," + lineArray[2]);
+									//current.setExit(next, lineArray[1] + "," + lineArray[2]);
 									System.out.println("\n" + current.getName() + " now has exit " + next.getName() + " at " + lineArray[1] + "," + lineArray[2] );
 								}
 							}
