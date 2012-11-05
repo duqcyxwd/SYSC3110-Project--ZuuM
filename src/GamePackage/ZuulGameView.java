@@ -11,14 +11,15 @@ import javax.swing.JTextArea;
 public class ZuulGameView extends GameView {
 	
 	private JTextArea lives;
-	private JTextArea points;
+	private JTextArea roomDescription;
 	private JButton undoButton;
 	private JButton redoButton;
 
 	public ZuulGameView(Game game) {
 		super(game);
 		lives = new JTextArea();
-		points = new JTextArea();
+		roomDescription = new JTextArea();
+		roomDescription.setPreferredSize(new Dimension(1,1));
 	    undoButton = new JButton("Undo");
 	    undoButton.setPreferredSize(new Dimension(1,1));
 	    undoButton.addActionListener(new UndoButtonHandler(game));
@@ -26,7 +27,7 @@ public class ZuulGameView extends GameView {
 	    redoButton.setPreferredSize(new Dimension(1,1));
 	    redoButton.addActionListener(new RedoButtonHandler(game));
 		updateComponents();
-		Component[] more = {lives, undoButton, redoButton};
+		Component[] more = {lives, undoButton, redoButton,  roomDescription};
 		addMoreComponents(more);
 	}
 	
@@ -38,6 +39,7 @@ public class ZuulGameView extends GameView {
 	public void updateComponents() {
 		Player player = game.getUser();
 		lives.setText("Lives: " + player.getLives());
+		roomDescription.setText("Room: " + game.getCurrentRoom().getDescription());
 	}
 	
 	private class UndoButtonHandler implements ActionListener {
