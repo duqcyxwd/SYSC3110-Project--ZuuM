@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
  * @author Bruno Colantonio, Nishant Bhasin, Mohamed Ahmed, Yongquinchuan Du 
  * @version Oct 23rd, 2012
  */
-public class Item extends Tile{
+public class Item extends Cell{
     // instance variables - replace the example below with your own
     private String description;
     private int weight;

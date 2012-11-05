@@ -11,6 +11,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -27,6 +28,9 @@ public class GameView implements Observer {
 	protected Game game = null;
 	private Component[] components = null;
 	private boolean frameIsSized = false;
+	private Tile[][] tile;
+
+	protected static final ImageIcon northImage = new ImageIcon("img/northExit.png");
 	
 	/**
 	 * Sets up the JFrame by defining properties and position on the screen.
@@ -36,6 +40,7 @@ public class GameView implements Observer {
 	 */
 	public GameView(Game game) {
 		super();
+		tile = new Tile[game.getCurrentRoom().getHeight()][game.getCurrentRoom().getWidth()];	
 		this.game = game;
 		game.addObserver(this);
 		frame = new JFrame(game.getClass().getSimpleName());
@@ -77,19 +82,21 @@ public class GameView implements Observer {
 		}
 		// gameField contains the tiles
 		Container gameField = new Container();
-		gameField.setLayout(new GridLayout(game.getHeight(),game.getWidth()));
+		gameField.setLayout(new GridLayout(game.getCurrentRoom().getHeight(),game.getCurrentRoom().getWidth()));
 		wrapper.add(gameField,BorderLayout.CENTER);
 		// Place playingField tiles on the game.
-		Tile tile;
 		GameController handler = new GameController(game);
-		for (int row = 0; row < game.getHeight(); row++) {
-			for (int col = 0; col < game.getWidth(); col++) {
-				tile = game.getTile(new Position(row,col));
+		for (int row = 0; row < game.getCurrentRoom().getHeight(); row++) {
+			for (int col = 0; col < game.getCurrentRoom().getWidth(); col++) {
+				tile[row][col] = new Tile(game.getCell(new Position(row,col)));
 				// if this tile has no listeners, add one
-				if (tile.getActionListeners().length == 0) {
-					tile.addActionListener(handler);
+				if (tile[row][col].getActionListeners().length == 0) {
+					tile[row][col].addActionListener(handler);
 				}
-				gameField.add(tile);
+				if(tile[row][col].getCell() instanceof Exit){
+					tile[row][col].setImage(northImage);
+				}
+				gameField.add(tile[row][col]);
 			}
 		}
 		

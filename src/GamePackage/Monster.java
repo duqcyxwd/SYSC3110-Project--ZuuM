@@ -17,8 +17,8 @@ public class Monster extends Avatar{
 	 /**
      * Constructor of the initialises location and place
      */
-	public Monster(Position position, Game game, ImageIcon image){ 
-		super(position, game, image, 1);
+	public Monster(Position position, Game game){ 
+		super(position, game, 1);
 	}
 	
 	

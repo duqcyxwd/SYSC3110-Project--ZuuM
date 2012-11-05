@@ -11,11 +11,22 @@ import javax.swing.ImageIcon;
  * @author
  */
 
-@SuppressWarnings("serial")
-public abstract class Avatar extends Tile {
+public abstract class Avatar extends Cell {
+
+
+	private static final int TOP_LEFT=0; 
+	private static final int TOP=1;
+	private static final int TOP_RIGHT=2;
+	private static final int LEFT=3;
+	private static final int RIGHT=4;
+	private static final int BOTTOM_LEFT=5;
+	private static final int BOTTOM=6;
+	private static final int BOTTOM_RIGHT=7;
 	
 	private int lives;
 	private int points;
+	private Position position;
+	private Game game;
 	
 	/**
 	 * @param image pictorial representation of the Avatar to be used on a Tile
@@ -23,9 +34,10 @@ public abstract class Avatar extends Tile {
 	 * @param position represents the position of the Avatar on the Game
 	 * @param game represents the game that is associated to this Avatar
 	 */
-	public Avatar(Position position, Game game, ImageIcon image, int lives) {
-		super(position, game);
-		setImage(image);
+	public Avatar(Position position, Game game, int lives) {
+		super(position,game);
+		this.game=game;
+		this.position = position;
 		this.lives = lives;
 		this.points = 0;
 	}
@@ -136,9 +148,9 @@ public abstract class Avatar extends Tile {
 	 */
 	public boolean canMoveTo(Position position) {
 		if (position.getRow() < 0 || position.getCol() < 0
-				|| position.getRow() >= game.getHeight() || position.getCol() >= game.getWidth())
+				|| position.getRow() >= game.getCurrentRoom().getHeight() || position.getCol() >= game.getCurrentRoom().getWidth())
 			return false;
-		else if (!game.getTile(position).getAccessible()) return false;
+		else if (!game.getCell(position).getAccessible()) return false;
 		else if ((Math.abs(position.getRow() - this.position.getRow()) == 1 && Math.abs(position.getCol() - this.position.getCol()) == 0))
 			return true; // moved one space vertically
 		else if ((Math.abs(position.getRow() - this.position.getRow()) == 0 && Math.abs(position.getCol() - this.position.getCol()) == 1))

@@ -14,31 +14,18 @@ import javax.swing.JButton;
 @SuppressWarnings("serial")
 public class Tile extends JButton {
 	
-	public static final int TOP_LEFT=0; 
-	public static final int TOP=1;
-	public static final int TOP_RIGHT=2;
-	public static final int LEFT=3;
-	public static final int RIGHT=4;
-	public static final int BOTTOM_LEFT=5;
-	public static final int BOTTOM=6;
-	public static final int BOTTOM_RIGHT=7;
 	
 	public static final int HEIGHT_OF_IMG = 30;
-
 	public static final int WIDTH_OF_IMG = 30;
-	
 	private ImageIcon image; 
-	private boolean accessible;
-	public Avatar A;
-	
+	private Game game;
+	private Cell cell;
 	/**
 	 * the blankTileImage represents an instance of Tile
 	 */
 	protected static ImageIcon blankTileImage = new ImageIcon("img/white-tile.png");
 	
-	protected Position position;
 	
-	protected Game game;
 	
 	/**
 	 * The constructor will create a Tile at the positions of
@@ -46,14 +33,13 @@ public class Tile extends JButton {
 	 * @param position will set the position of the Tile
 	 * @param game will set the Tile to the specified game
 	 */
-	public Tile(Position position, Game game, ImageIcon image){
+	public Tile(Cell cell, ImageIcon image){
+		this.cell = cell;
 		setBorderPainted(false);
-		accessible = true;
 		this.image = image;
 		setIcon(image);
 		setPreferredSize(new Dimension(WIDTH_OF_IMG,HEIGHT_OF_IMG));
 		this.game = game;
-		setPosition(position);
 	}
 	
 	/**
@@ -62,14 +48,13 @@ public class Tile extends JButton {
 	 * @param position will set the position of the Tile
 	 * @param game will set the Tile to the specified game
 	 */
-	public Tile(Position position, Game game){
+	public Tile(Cell cell){
+		this.cell = cell;
 		setBorderPainted(false);
-		accessible = true;
 		image = blankTileImage;
 		setIcon(image);
 		setPreferredSize(new Dimension(WIDTH_OF_IMG,HEIGHT_OF_IMG));
 		this.game = game;
-		setPosition(position);
 	}
 	
 	/**
@@ -85,8 +70,8 @@ public class Tile extends JButton {
 	 * The method will return the Position of the Tile
 	 * @return the position of the tile
 	 */
-	public Position getPosition(){
-		return position;
+	public Cell getCell(){
+		return cell;
 	}
 	
 	/**
@@ -94,13 +79,13 @@ public class Tile extends JButton {
 	 * Throws an exception if the position given is out of bounds.
 	 * @param position to set piece
 	 */
-	public void setPosition(Position position) throws IndexOutOfBoundsException{
-		if(position.getRow() < 0 || position.getRow() >= game.getHeight())
+	public void setCell(Cell cell) throws IndexOutOfBoundsException{
+		if(cell.getPosition().getRow() < 0 || cell.getPosition().getRow() >= game.getCurrentRoom().getHeight())
 			throw new IndexOutOfBoundsException("Row out of bounds.");
-		else if(position.getCol() < 0 || position.getCol() >= game.getWidth())
+		else if(cell.getPosition().getCol() < 0 || cell.getPosition().getCol() >= game.getCurrentRoom().getWidth())
 			throw new IndexOutOfBoundsException("Col out of bounds");
 		else
-			this.position = position;
+			this.cell = cell;
 	}
 	
 	/**
@@ -120,56 +105,6 @@ public class Tile extends JButton {
 		setIcon(image);
 	}
 	
-	/**
-	 * @return true if Tile is generally accessible 
-	 */
-	public boolean getAccessible(){
-		return accessible;
-	}
-	
-	/**
-	 * The method will make the tile accessible
-	 * @param accessible Set whether the tile is accessible
-	 * by the Avatars or not.
-	 */
-	public void setAccessible(boolean accessible){
-		this.accessible = accessible;
-	}
-	
-	/**
-	 * The method will return an array to show the tiles surrounding the
-	 * current tile. The indexes of the the array correspond to the constants
-	 * defined at the top of class. Adjacent squares that are out of the bounds
-	 * of the game will be set to null.
-	 */
-	public Tile[] getAdjacentTiles(){
-		Tile[] adj = new Tile[8];
-		int adjIndex = 0;
-		int thisRow = position.getRow();
-		int thisCol = position.getCol();
-		for(int i = -1; i <= 1; i++)
-		{			
-			for(int j = -1; j <= 1; j++)
-			{
-				if(i==0 && j==0)//if the loop is at the centre Tile, skip it
-				{
-					j++;
-				}
-				
-				//out of bounds checks
-				if((thisRow + i) < 0 || (thisCol + j) < 0)
-					adj[adjIndex] = null;
-				else if((thisRow + i) >= game.getHeight() || (thisCol + j) >= game.getWidth())
-					adj[adjIndex] = null;
-				//add Tile to appropriate index
-				else
-					adj[adjIndex] = game.getTile(new Position(thisRow+i,thisCol+j));
-				
-				adjIndex++;
-			}
-		}
-		return adj;
-	}
 	
 	public String toString() {
 		return " "; // blank tile

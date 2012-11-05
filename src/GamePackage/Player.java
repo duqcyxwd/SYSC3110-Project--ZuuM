@@ -21,7 +21,7 @@ public class Player extends Avatar {
      * Constructor of the initialises location and place
      */
 	public Player(Position position, Game game, int lives){ 
-		super(position, game, playerImage, lives);
+		super(position, game, lives);
 	}
 	
 	

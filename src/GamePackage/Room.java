@@ -25,6 +25,10 @@ public class Room {
     private ArrayList<Item> items;
     private ArrayList<Monster> mon_list; // List of monsters in the room.
     private String name;
+	private static final int WIDTH = 10;
+	private static final int HEIGHT = 10;
+    
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -153,5 +157,11 @@ public class Room {
 		return name;
     	
     }
-
+    public int getWidth(){
+  		return WIDTH;
+  	}
+  	
+  	public int getHeight(){
+  		return HEIGHT;
+  	}
 }

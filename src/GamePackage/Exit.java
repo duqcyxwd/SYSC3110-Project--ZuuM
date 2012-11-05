@@ -2,7 +2,7 @@ package GamePackage;
 
 import javax.swing.ImageIcon;
 
-public class Exit extends Tile {
+public class Exit extends Cell {
 	
 	public Room nextRoom;
 	public String name;
@@ -19,11 +19,11 @@ public class Exit extends Tile {
 		super(position, game);
 		this.name = name;
 		this.nextRoom = nextRoom;
-		setExitImage();
+		//setExitImage();
 	}
 	
 	public void setExitImage(){
-		if(name.equals("north")){
+	/*	if(name.equals("north")){
 			setIcon(northImage);
 		}else if(name.equals("south")){
 			setIcon(southImage);
@@ -35,7 +35,7 @@ public class Exit extends Tile {
 			setIcon(upImage);
 		}else if(name.equals("down")){
 			setIcon(downImage);
-		}
+		}*/
 	}
 	
 	public String getName(){

@@ -39,10 +39,8 @@ public class Game extends Observable{
 	public HashMap<Monster,Room> monster_map; 
 	public Monster monTowards, monTowards2, monTowards3;
 	
-	protected Tile[][] playingField;
-	protected Tile[][] itemMap;
-	public static final int WIDTH = 10;
-	public static final int HEIGHT = 10;
+	protected Cell[][] playingField;
+	protected Cell[][] itemMap;
 	
 	protected ArrayList<Avatar> movableTile;
 	
@@ -58,17 +56,18 @@ public class Game extends Observable{
      * Create the game and initialise its internal map.
      */
     public Game() {
+    	createRooms();
        // parser = new Parser();
         inventory = new ArrayList<Item>();        
        // commands = new Stack<Command>();
        // undoCommands = new Stack<Command>();
-		playingField = new Tile[HEIGHT][WIDTH];	
-		itemMap = new Tile[HEIGHT][WIDTH];
+		playingField = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];	
+		itemMap = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];
 		movableTile = new ArrayList<Avatar>();
 		prevItemMaps = new LinkedList<Tile[][]>();
 		prevMovableTiles = new LinkedList<ArrayList<Avatar>>();
-		populateItemMap();
 		//updateUndoLists();
+		populateItemMap();
 		syncItemMapAndField(movableTile);
     }
 
@@ -86,9 +85,9 @@ public class Game extends Observable{
         cafe = new Room("in the cafe");
         basement = new Room("in the basement");
         
-        monTowards = new Monster(new Position(1,1),this, monstertowards);
-        monTowards2 = new Monster(new Position(1,1), this, monsterimage);
-        monTowards3 = new Monster(new Position(4,4), this, monstertowards);
+        monTowards = new Monster(new Position(1,1),this);
+        monTowards2 = new Monster(new Position(1,1), this);
+        monTowards3 = new Monster(new Position(4,4), this);
         
     	oEast = new Exit(new Position(4,8), this, "east", pub);
 		oWest = new Exit(new Position(4,1), this, "west", theatre);
@@ -142,6 +141,7 @@ public class Game extends Observable{
     	Avatar hero = movableTile.get(0);
 		Position nextPos;
 		nextPos = hero.getNextPosition(pos);
+		System.out.println(pos);
 		
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
@@ -245,20 +245,11 @@ public class Game extends Observable{
     	 }
      }
      
-
-     
-     public int getWidth(){
- 		return WIDTH;
- 	}
- 	
- 	public int getHeight(){
- 		return HEIGHT;
- 	}
  	
  	public Item getItem(Position position) throws IndexOutOfBoundsException{
-		if(position.getRow() < 0 || position.getRow() >= HEIGHT)
+		if(position.getRow() < 0 || position.getRow() >= currentRoom.getHeight())
 			throw new IndexOutOfBoundsException("Row out of bounds."+position.getRow());
-		else if(position.getCol() < 0 || position.getCol() >= WIDTH)
+		else if(position.getCol() < 0 || position.getCol() >= currentRoom.getWidth())
 			throw new IndexOutOfBoundsException("Col out of bounds"+position.getCol());
 		else {
 			if (itemMap[position.getRow()][position.getCol()] instanceof Item)
@@ -270,10 +261,10 @@ public class Game extends Observable{
 	 * @param position The position of interest
 	 * @return Tile at position, null if no item
 	 */
-	public Tile getTile(Position position) throws IndexOutOfBoundsException{
-		if(position.getRow() < 0 || position.getRow() >= HEIGHT)
+	public Cell getCell(Position position) throws IndexOutOfBoundsException{
+		if(position.getRow() < 0 || position.getRow() >= currentRoom.getHeight())
 			throw new IndexOutOfBoundsException("Row out of bounds.");
-		else if(position.getCol() < 0 || position.getCol() >= WIDTH)
+		else if(position.getCol() < 0 || position.getCol() >= currentRoom.getWidth())
 			throw new IndexOutOfBoundsException("Col out of bounds");
 		else
 			return playingField[position.getRow()][position.getCol()];
@@ -287,8 +278,8 @@ public class Game extends Observable{
 	public String toString(){
 		String s = "";
 		
-		for(int i = 0; i < WIDTH; i++){
-			for(int j = 0; j < HEIGHT; j++){
+		for(int i = 0; i < currentRoom.getWidth(); i++){
+			for(int j = 0; j < currentRoom.getHeight(); j++){
 				s += " " + playingField[i][j].toString();
 			}
 			s += "\n";
@@ -305,20 +296,19 @@ public class Game extends Observable{
 	}
 	
 	protected void populateItemMap(){
-		for(int row = 0; row<HEIGHT; row++){
-			for(int col =0; col<WIDTH; col++){
-				if(row == 0 || col == 0 || row == HEIGHT-1 || col == WIDTH-1){
+		
+		for(int row = 0; row<currentRoom.getHeight(); row++){
+			for(int col =0; col<currentRoom.getWidth(); col++){
+				if(row == 0 || col == 0 || row == currentRoom.getHeight()-1 || col == currentRoom.getWidth()-1){
 					itemMap[row][col] =new Wall(new Position(row,col),this);
 				}else{
-					itemMap[row][col] =new Tile(new Position(row,col),this);
+					itemMap[row][col] =new Cell(new Position(row,col),this);
 				}
 			}
 		}	
 
-        createRooms();
+        //createRooms();
        
-        
-
         movableTile.add(new Player(new Position(5,4), this, 5));
 		for(Monster M: monsters.values())
 		{
@@ -400,8 +390,8 @@ public class Game extends Observable{
         }
 
 		
-		for(int row = 0; row < HEIGHT; row++){
-			for(int col = 0; col < WIDTH; col++){
+		for(int row = 0; row < currentRoom.getHeight(); row++){
+			for(int col = 0; col < currentRoom.getWidth(); col++){
 				playingField[row][col] = itemMap[row][col];
 			}
 		}
@@ -440,10 +430,10 @@ public class Game extends Observable{
 	}
 	
 	public void removeExits(){
-		for(int row = 0; row < HEIGHT; row++){
-			for(int col = 0; col < WIDTH; col++){
+		for(int row = 0; row < currentRoom.getHeight(); row++){
+			for(int col = 0; col < currentRoom.getWidth(); col++){
 				if(itemMap[row][col] instanceof Exit){
-					itemMap[row][col] = new Tile(new Position(row,col), this);
+					itemMap[row][col] = new Cell(new Position(row,col), this);
 				}
 			}
 		}
@@ -451,14 +441,18 @@ public class Game extends Observable{
 
 	public void removeMonster(){
 
-		for(int row = 0; row < HEIGHT; row++){
-			for(int col = 0; col < WIDTH; col++){
+		for(int row = 0; row < currentRoom.getHeight(); row++){
+			for(int col = 0; col < currentRoom.getWidth(); col++){
 				if(itemMap[row][col] instanceof Monster){
-					itemMap[row][col] = new Tile(new Position(row,col), this);
+					itemMap[row][col] = new Cell(new Position(row,col), this);
 				}
 			}
 		}
 	
+	}
+	
+	public Room getCurrentRoom(){
+		return currentRoom;
 	}
 	
 	/**
