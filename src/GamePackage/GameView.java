@@ -84,7 +84,7 @@ public class GameView implements Observer {
 			updateComponents();
 			// additionalComponent stored on top of gameField
 			Container additionalComponent = new Container();
-			additionalComponent.setLayout(new GridLayout(3, components.length));
+			additionalComponent.setLayout(new GridLayout(2, components.length));
 			for (int i = 0; i < components.length; i++) {
 				additionalComponent.add(components[i]);
 			}
