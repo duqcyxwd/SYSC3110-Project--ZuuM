@@ -31,6 +31,12 @@ public class GameView implements Observer {
 	private Tile[][] tile;
 
 	protected static final ImageIcon northImage = new ImageIcon("img/northExit.png");
+	protected static final ImageIcon southImage = new ImageIcon("img/southExit.png");
+	protected static final ImageIcon westImage = new ImageIcon("img/westExit.png");
+	protected static final ImageIcon eastImage = new ImageIcon("img/eastExit.png");
+	protected static final ImageIcon upImage = new ImageIcon("img/upExit.png");
+	protected static final ImageIcon downImage = new ImageIcon("img/downExit.png");
+	
 	protected static final ImageIcon playerImage = new ImageIcon("img/red-Tile.png");
 	protected static final ImageIcon monster1Image = new ImageIcon("img/mon-towards.png");
 	protected static final ImageIcon monster2Image = new ImageIcon("img/mon-tile.png");
@@ -99,6 +105,20 @@ public class GameView implements Observer {
 				}
 				if(tile[row][col].getCell() instanceof Exit){
 					tile[row][col].setImage(northImage);
+					if(tile[row][col].getCell().getName().equals("north")){
+						tile[row][col].setIcon(northImage);
+					}else if(tile[row][col].getCell().getName().equals("south")){
+						tile[row][col].setIcon(southImage);
+					}else if(tile[row][col].getCell().getName().equals("west")){
+						tile[row][col].setIcon(westImage);
+					}else if(tile[row][col].getCell().getName().equals("east")){
+						tile[row][col].setIcon(eastImage);
+					}else if(tile[row][col].getCell().getName().equals("up")){
+						tile[row][col].setIcon(upImage);
+					}else if(tile[row][col].getCell().getName().equals("down")){
+						tile[row][col].setIcon(downImage);
+					}
+						
 				}
 				if(tile[row][col].getCell() instanceof Player){
 					tile[row][col].setImage(playerImage);

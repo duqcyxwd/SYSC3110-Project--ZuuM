@@ -140,8 +140,6 @@ public class Game extends Observable{
     	Avatar hero = movableTile.get(0);
 		Position nextPos;
 		nextPos = hero.getNextPosition(pos);
-		System.out.println(pos);
-		System.out.println(nextPos);
 		
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
@@ -153,54 +151,36 @@ public class Game extends Observable{
         	}
         }
 		hero.setPosition(nextPos);
-			if(currentRoom.getMonster().size()!=0)
-			{
+			if(currentRoom.getMonster().size()!=0){
 				Avatar mon = movableTile.get(1);
-				Position monCurrent = mon.getPosition();
-							
+				Position monCurrent = mon.getPosition();			
 				Position monNextPosition = mon.getNextPosition(hero.getPosition());
-							
-					for(Exit e : currentRoom.getExit()){
-						if(e.getPosition().equals(monNextPosition))
-						{
-						        monNextPosition = monCurrent;
-						        mon.setPosition(monNextPosition);
-						        removeMonster();
-						}
-						else
-						{
-						      	mon.setPosition(monNextPosition);
-						      	
-						}
-					}		
+				for(Exit e : currentRoom.getExit()){
+					if(e.getPosition().equals(monNextPosition)){
+						monNextPosition = monCurrent;
+						mon.setPosition(monNextPosition);
+						removeMonster();
+					}else{
+						mon.setPosition(monNextPosition);
+					}
+				}		
 					
-					if(mon.collidesWith(movableTile.get(0)))
-					{
-							hero.setPosition(new Position(1,1));
-							
-					     
-					        		currentRoom = initialRoom;
-					        		System.out.println(currentRoom);
-					        		Jpane.showMessageDialog(null, "You died. You have" + hero.getLives() + " lives left ");
-									System.out.println("Game Over");
-					        
-						
-					}
-					else if(movableTile.get(0).getLives()==0)
-					{
-						
-						Jpane.showMessageDialog(null, "Game Over. You have 0 lives LEFT !!");
-						System.out.println("Game Over");
-					}
+				if(mon.collidesWith(movableTile.get(0))){
+					hero.setPosition(new Position(1,1));
+					currentRoom = initialRoom;
+					System.out.println(currentRoom);
+					Jpane.showMessageDialog(null, "You died. You have" + hero.getLives() + " lives left ");
+					System.out.println("Game Over");
+					
+				}else if(movableTile.get(0).getLives()==0){
+					Jpane.showMessageDialog(null, "Game Over. You have 0 lives LEFT !!");
+					System.out.println("Game Over");
+				}
 			}
-			else
-			{
+			else{
 				removeMonster();
 			}
 	
-		
-		
-
 		syncItemMapAndField(movableTile);
 		if (checkWin()) {
 			setChanged();

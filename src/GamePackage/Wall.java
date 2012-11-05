@@ -20,6 +20,7 @@ public class Wall extends Cell{
 	 */
 	public Wall(Position position, Game game) {
 		super(position, game);
+		setAccessible(false);
 	}
 	
 	public String toString() {

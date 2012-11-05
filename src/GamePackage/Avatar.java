@@ -25,7 +25,6 @@ public abstract class Avatar extends Cell {
 	
 	private int lives;
 	private int points;
-	private Position position;
 	private Game game;
 	
 	/**
@@ -37,7 +36,6 @@ public abstract class Avatar extends Cell {
 	public Avatar(Position position, Game game, int lives) {
 		super(position,game);
 		this.game=game;
-		this.position = position;
 		this.lives = lives;
 		this.points = 0;
 	}
@@ -121,9 +119,7 @@ public abstract class Avatar extends Cell {
 		Position newPos;
 		switch (direction) {
 			case TOP:
-				System.out.println("position = " + position);
 				newPos = new Position(position.getRow()-1, position.getCol());
-				System.out.println("newPos = " + newPos);
 				if (!this.canMoveTo(newPos)) throw(new IllegalArgumentException("Move is not permitted"));
 				return newPos;
 			case BOTTOM:

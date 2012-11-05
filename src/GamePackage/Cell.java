@@ -19,14 +19,9 @@ public class Cell extends JButton {
 
 	public static final int WIDTH_OF_IMG = 30;
 	
-	private ImageIcon image; 
 	private boolean accessible;
-	public Avatar A;
-	
-	
 	protected Position position;
-	
-	protected Game game;
+	private Game game;
 	
 	/**
 	 * The constructor will create a Tile at the positions of
