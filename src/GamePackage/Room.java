@@ -25,8 +25,8 @@ public class Room {
     private ArrayList<Item> items;
     private ArrayList<Monster> mon_list; // List of monsters in the room.
     private String name;
-	private static final int WIDTH = 10;
-	private static final int HEIGHT = 10;
+	private static final int WIDTH = 11;
+	private static final int HEIGHT = 11;
     
     
     /**

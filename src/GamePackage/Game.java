@@ -88,17 +88,17 @@ public class Game extends Observable{
         monTowards = new Monster(new Position(1,1),this, "monster1");
         monTowards2 = new Monster(new Position(9,9), this, "monster2");
         
-    	oEast = new Exit(new Position(4,8), this, "east", pub);
-		oWest = new Exit(new Position(4,1), this, "west", theatre);
-		oSouth = new Exit(new Position(8,4), this, "south", lab);
+    	oEast = new Exit(new Position(5,9), this, "east", pub);
+		oWest = new Exit(new Position(5,1), this, "west", theatre);
+		oSouth = new Exit(new Position(9,5), this, "south", lab);
 		oUp = new Exit(new Position(3,3), this, "up", cafe);
-		oDown = new Exit(new Position(6,6), this, "down", basement);
-		tEast = new Exit(new Position(4,8), this, "east", outside);
-		pWest = new Exit(new Position(4,1), this, "west", outside);
-		lNorth = new Exit(new Position(1,4), this, "north", outside);
-		lWest = new Exit(new Position(4,1), this, "west", office);
-		ofEast = new Exit(new Position(4,8), this, "east", lab);
-		cDown = new Exit(new Position(6,6), this, "down", outside);
+		oDown = new Exit(new Position(7,7), this, "down", basement);
+		tEast = new Exit(new Position(5,9), this, "east", outside);
+		pWest = new Exit(new Position(5,1), this, "west", outside);
+		lNorth = new Exit(new Position(1,5), this, "north", outside);
+		lWest = new Exit(new Position(5,1), this, "west", office);
+		ofEast = new Exit(new Position(5,9), this, "east", lab);
+		cDown = new Exit(new Position(7,7), this, "down", outside);
 		bUp = new Exit(new Position(3,3), this, "up", outside);
 		
 		basementItem = new Item(new Position(3,3), this, "apple");
@@ -134,7 +134,9 @@ public class Game extends Observable{
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play(Position pos){      
+    public void play(Position pos){  
+		int exitCol,exitRow,heroCol,heroRow;
+		Position roomChangePos = null;
     	JOptionPane Jpane;
 		Jpane = new JOptionPane();
     	Avatar hero = movableTile.get(0);
@@ -143,20 +145,23 @@ public class Game extends Observable{
 		
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
-        		int exitCol,exitRow,heroCol,heroRow;
+        		
+        		removeExits();
         		exitRow = e.getPosition().getRow();
         		exitCol = e.getPosition().getCol();
+        		heroRow = currentRoom.getHeight()-1 - exitRow;
+        		heroCol = currentRoom.getWidth()-1 - exitCol;
         		
-        		//heroRow = 
-        		//heroCol
-        		
-        		System.out.println(currentRoom);
-        		removeExits();
+        		roomChangePos = new Position(heroRow, heroCol);
+        	    		
         		this.previousRoom = currentRoom;
         		currentRoom = e.getNextRoom();
         		System.out.println(currentRoom);
         	}
         }
+		if(roomChangePos!=null){
+			nextPos = roomChangePos;
+		}
 		hero.setPosition(nextPos);
 			if(currentRoom.getMonster().size()!=0){
 				Avatar mon = movableTile.get(1);
