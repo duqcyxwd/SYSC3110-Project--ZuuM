@@ -148,7 +148,7 @@ public class Game extends Observable{
 		
 		
 	      // push the whole playingFile to cellsStack
-        stateStack.push(currentState);
+       // stateStack.push(currentState);
         
         
         
@@ -353,10 +353,6 @@ public class Game extends Observable{
 			}
 		}
 		
-		for(Exit e : currentRoom.getExit()){
-        	itemMap[e.getPosition().getRow()][e.getPosition().getCol()] = e;
-        }
-
 		setChanged();
 		notifyObservers("update");
 	}
@@ -415,7 +411,7 @@ public class Game extends Observable{
         redoStateStack.push(currentState);
         currentState = stateStack.pop();
 
-        
+        syncItemMapAndField(movableTile);
         //call update method
         /*
          * 
@@ -432,6 +428,8 @@ public class Game extends Observable{
     public void redo() {
         stateStack.push(currentState);
         currentState = redoStateStack.pop();
+        
+        syncItemMapAndField(movableTile);
            //call update method
         /*
          * 
