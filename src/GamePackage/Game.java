@@ -143,6 +143,12 @@ public class Game extends Observable{
 		
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
+        		int exitCol,exitRow,heroCol,heroRow;
+        		exitRow = e.getPosition().getRow();
+        		exitCol = e.getPosition().getCol();
+        		
+        		//heroRow = 
+        		//heroCol
         		
         		System.out.println(currentRoom);
         		removeExits();
