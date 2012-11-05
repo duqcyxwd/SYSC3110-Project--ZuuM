@@ -85,9 +85,8 @@ public class Game extends Observable{
         cafe = new Room("in the cafe");
         basement = new Room("in the basement");
         
-        monTowards = new Monster(new Position(1,1),this);
-        monTowards2 = new Monster(new Position(1,1), this);
-        monTowards3 = new Monster(new Position(4,4), this);
+        monTowards = new Monster(new Position(1,1),this, "monster1");
+        monTowards2 = new Monster(new Position(9,9), this, "monster2");
         
     	oEast = new Exit(new Position(4,8), this, "east", pub);
 		oWest = new Exit(new Position(4,1), this, "west", theatre);
@@ -122,7 +121,7 @@ public class Game extends Observable{
         //adding monster    
         cafe.addMonster(monTowards);
       //  lab.addMonster(monTowards3);
-        theatre.addMonster(monTowards);
+        theatre.addMonster(monTowards2);
         monsters = new HashMap<Room, Monster>();
         monsters.put(cafe, monTowards);
        // monsters.put(lab, monTowards3);
@@ -142,6 +141,7 @@ public class Game extends Observable{
 		Position nextPos;
 		nextPos = hero.getNextPosition(pos);
 		System.out.println(pos);
+		System.out.println(nextPos);
 		
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
@@ -318,7 +318,7 @@ public class Game extends Observable{
 	}
 	
 	
-	/**
+	/*
 	public void monOnTile()
 	{
 
@@ -365,7 +365,7 @@ public class Game extends Observable{
 
 	}
 	
-	**/
+	*/
 	
 	/**
 	 * Tells if the room has changed or not.

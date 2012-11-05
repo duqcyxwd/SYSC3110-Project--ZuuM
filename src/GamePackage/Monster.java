@@ -13,14 +13,22 @@ import javax.swing.*;
 
 public class Monster extends Avatar{
 	
-	
+	private String name;
 	 /**
      * Constructor of the initialises location and place
      */
-	public Monster(Position position, Game game){ 
+	public Monster(Position position, Game game, String name){ 
 		super(position, game, 1);
+		this.name = name;
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
 	
 	@Override
 	public boolean collidesWith(Avatar avatar) {

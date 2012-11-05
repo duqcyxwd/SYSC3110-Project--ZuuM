@@ -105,6 +105,7 @@ public abstract class Avatar extends Cell {
 		} catch (IllegalArgumentException exc) {
 			throw new IllegalArgumentException("Not a possible move");
 		}
+		
 	}
 	
 	/**
@@ -120,7 +121,9 @@ public abstract class Avatar extends Cell {
 		Position newPos;
 		switch (direction) {
 			case TOP:
+				System.out.println("position = " + position);
 				newPos = new Position(position.getRow()-1, position.getCol());
+				System.out.println("newPos = " + newPos);
 				if (!this.canMoveTo(newPos)) throw(new IllegalArgumentException("Move is not permitted"));
 				return newPos;
 			case BOTTOM:

@@ -31,6 +31,10 @@ public class GameView implements Observer {
 	private Tile[][] tile;
 
 	protected static final ImageIcon northImage = new ImageIcon("img/northExit.png");
+	protected static final ImageIcon playerImage = new ImageIcon("img/red-Tile.png");
+	protected static final ImageIcon monster1Image = new ImageIcon("img/mon-towards.png");
+	protected static final ImageIcon monster2Image = new ImageIcon("img/mon-tile.png");
+	protected static final ImageIcon wallImage = new ImageIcon("img/black-tile.png");
 	
 	/**
 	 * Sets up the JFrame by defining properties and position on the screen.
@@ -95,6 +99,19 @@ public class GameView implements Observer {
 				}
 				if(tile[row][col].getCell() instanceof Exit){
 					tile[row][col].setImage(northImage);
+				}
+				if(tile[row][col].getCell() instanceof Player){
+					tile[row][col].setImage(playerImage);
+				}
+				if(tile[row][col].getCell() instanceof Monster){
+					if(tile[row][col].getCell().getName().equals("monster1")){
+						tile[row][col].setImage(monster1Image);
+					}else if(tile[row][col].getCell().getName().equals("monster2")){
+						tile[row][col].setImage(monster2Image);
+					}
+				}
+				if(tile[row][col].getCell() instanceof Wall){
+					tile[row][col].setImage(wallImage);
 				}
 				gameField.add(tile[row][col]);
 			}
