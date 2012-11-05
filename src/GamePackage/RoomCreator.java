@@ -123,7 +123,7 @@ public class RoomCreator {
 
 	}
 
-	return null;
+	return (ArrayList<Room>) rooms;
 
 }
 

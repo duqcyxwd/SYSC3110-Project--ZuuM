@@ -106,8 +106,8 @@ public class Room {
      * @param south The south exit.
      * @param west The west exit.
      */
-    public void setExit(Room room, String direction) {
-        exits.put(direction, room);
+    public void setExit(Exit exit) {
+       // exits.add(exit);
     }
 
     public Room getExit(String exit) {
