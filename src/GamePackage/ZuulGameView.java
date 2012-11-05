@@ -32,7 +32,6 @@ public class ZuulGameView extends GameView {
 	
 	public static void main(String[] args) {
 		Game g = new Game();
-		@SuppressWarnings("unused")
 		ZuulGameView game = new ZuulGameView(g);
 	}
 	
