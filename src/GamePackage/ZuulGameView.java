@@ -12,6 +12,7 @@ public class ZuulGameView extends GameView {
 	
 	private JTextArea lives;
 	private JTextArea roomDescription;
+	private JTextArea inventory;
 	private JButton undoButton;
 	private JButton redoButton;
 
@@ -20,6 +21,8 @@ public class ZuulGameView extends GameView {
 		lives = new JTextArea();
 		roomDescription = new JTextArea();
 		roomDescription.setPreferredSize(new Dimension(1,1));
+		inventory = new JTextArea();
+		inventory.setPreferredSize(new Dimension(1,1));
 	    undoButton = new JButton("Undo");
 	    undoButton.setPreferredSize(new Dimension(1,1));
 	    undoButton.addActionListener(new UndoButtonHandler(game));
@@ -27,7 +30,7 @@ public class ZuulGameView extends GameView {
 	    redoButton.setPreferredSize(new Dimension(1,1));
 	    redoButton.addActionListener(new RedoButtonHandler(game));
 		updateComponents();
-		Component[] more = {lives, undoButton, redoButton,  roomDescription};
+		Component[] more = {undoButton, redoButton, lives, inventory, roomDescription};
 		addMoreComponents(more);
 	}
 	
@@ -40,6 +43,7 @@ public class ZuulGameView extends GameView {
 		Player player = game.getUser();
 		lives.setText("Lives: " + player.getLives());
 		roomDescription.setText("Room: " + game.getCurrentRoom().getDescription());
+		inventory.setText("Inventory: " /*+ player.getDescription()*/);
 	}
 	
 	private class UndoButtonHandler implements ActionListener {
