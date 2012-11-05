@@ -14,12 +14,14 @@ import javax.swing.ImageIcon;
 
 public class Player extends Avatar {
 	
+	protected static ImageIcon playerImage = new ImageIcon("img/red-tile.png");
+	
 	
 	 /**
      * Constructor of the initialises location and place
      */
-	public Player(Position position, Game game, ImageIcon image, int lives){ 
-		super(position, game, image, lives);
+	public Player(Position position, Game game, int lives){ 
+		super(position, game, playerImage, lives);
 	}
 	
 	

@@ -1,6 +1,8 @@
 package GamePackage;
 import java.util. * ;
 
+import javax.swing.ImageIcon;
+
 
 /**
  * Class Room - a room in an adventure game.
@@ -19,9 +21,9 @@ import java.util. * ;
 
 public class Room {
     private String description;
-    private Map < String, Room > exits;
-    private Map < String, Item > items;
-    private ArrayList < Monster > mon_list; // List of monsters in the room.
+    private ArrayList<Exit> exits;
+    private ArrayList<Item> items;
+    private ArrayList<Monster> mon_list; // List of monsters in the room.
     private String name;
     /**
      * Create a room described "description". Initially, it has
@@ -31,24 +33,17 @@ public class Room {
      */
     public Room(String description) {
         this.description = description;
-        exits = new HashMap < String, Room > ();
-        items = new HashMap < String, Item > ();
+        exits = new ArrayList<Exit> ();
+        items = new ArrayList<Item> ();
         mon_list = new ArrayList < Monster > (); // List of monsters in the room
     }
 
-    /**
-     * Function to add n number of monsters to this room
-     */
-    public void set_number_of_monster(int n) {
-    	for(int i = 0; i < n; i++) {
-    		//mon_list.add(new Monster(this, this.description)); // add a new monster n times
-        }
-    }
+
     /**
      * Function to add monster to this room
      */
-    public void addMonster() {
-       // mon_list.add(new Monster(this, this.description)); // add a single new monster
+    public void addMonster(Monster M) {
+       mon_list.add(M); // add a single new monster
     }
 
     /**
@@ -56,8 +51,8 @@ public class Room {
      * It returns the number of monsters present in this
      * room.
      */
-    public int getMonster() {
-        return mon_list.size(); // returns number of monsters in room
+    public ArrayList<Monster> getMonster() {
+        return mon_list; // returns number of monsters in room
     }
 
     /**
@@ -77,14 +72,14 @@ public class Room {
      * @param  accepts an item
      */
     public void addItem(Item item) {
-        items.put(item.getDescription(), item);
+        items.add(item);
     }
 
     /**
      * returns the string object associated with a certain object name (string)
      */
-    public Item getItem(String item) {
-        return(Item) items.get(item);
+    public ArrayList<Item> getItem(String item) {
+        return items;
     }
 
 
@@ -107,11 +102,13 @@ public class Room {
      * @param west The west exit.
      */
     public void setExit(Exit exit) {
-       // exits.add(exit);
+        exits.add(exit);
     }
+    
+    
 
-    public Room getExit(String exit) {
-        return(Room) exits.get(exit);
+    public ArrayList<Exit> getExit() {
+        return exits;
     }
     
     /**
@@ -120,7 +117,7 @@ public class Room {
      */
     public String getExitString() {
         String s = "";
-        for(Object direction: exits.keySet())
+        for(Object direction: exits)
         s += direction + " ";
         return s;
     }
@@ -132,8 +129,8 @@ public class Room {
     public String getLongDescription() {
         String itemsString = "";
         String ld = "";
-        if(items.size() > 0) for(String item: items.keySet()) //if items is not empty, it adds the items to a String
-        	itemsString += item + " ";
+        if(items.size() > 0) for(Item item: items) //if items is not empty, it adds the items to a String
+        	itemsString += item.getDescription() + " ";
         else itemsString = "none";
 
         ld = ld + "You are " + description + ".\n" + "Exits: " + getExitString() + ". The items in the room are : " + itemsString + "\n";

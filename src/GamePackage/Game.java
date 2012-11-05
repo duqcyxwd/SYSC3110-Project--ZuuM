@@ -3,6 +3,7 @@ package GamePackage;
 import java.util.*;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import GamePackage.Position;
 
@@ -26,18 +27,17 @@ import GamePackage.Tile;
 
 public class Game extends Observable{
 	
-    private Parser parser;
     private Room currentRoom;
-    private Stack<Room> moves;
-    private Stack<Command> commands;
-    private Stack<Command> undoCommands;
-    private Command lastCommand;  ///save the last command you did and it is using for redo
     private List<Item> inventory;
-	public Room outside, theatre, pub, lab, office, cafe, basement;
+	public Room outside, theatre, pub, lab, office, cafe, basement, previousRoom, initialRoom;
+	public Exit oEast, oWest, oSouth, oUp, oDown, tEast, pWest, lNorth, lWest, ofEast, cDown, bUp;
+	public Item basementItem;
+       
+       
     //Monster Variables
-	private Map<Room, ArrayList<Monster>> monsters; // Will be used later
-	private HashMap<Monster,Room> monster_map; 
-	
+	private HashMap<Room, Monster> monsters; // Will be used later
+	public HashMap<Monster,Room> monster_map; 
+	public Monster monTowards, monTowards2, monTowards3;
 	
 	protected Tile[][] playingField;
 	protected Tile[][] itemMap;
@@ -50,19 +50,18 @@ public class Game extends Observable{
 	protected LinkedList<ArrayList<Avatar>> prevMovableTiles;
 	protected int undoIndex = 0;
 	protected int undoCount = 0;
+    protected static ImageIcon monsterimage = new ImageIcon("img/mon-tile.png");   
+    protected static ImageIcon monstertowards = new ImageIcon("img/mon-towards.png");
 	
-	protected static ImageIcon playerImage = new ImageIcon("img/red-tile.png");
-	protected static ImageIcon wallImage = new ImageIcon("img/black-tile.png");
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() {
-        createRooms();
-        parser = new Parser();
+       // parser = new Parser();
         inventory = new ArrayList<Item>();        
-        commands = new Stack<Command>();
-        undoCommands = new Stack<Command>();
+       // commands = new Stack<Command>();
+       // undoCommands = new Stack<Command>();
 		playingField = new Tile[HEIGHT][WIDTH];	
 		itemMap = new Tile[HEIGHT][WIDTH];
 		movableTile = new ArrayList<Avatar>();
@@ -87,225 +86,131 @@ public class Game extends Observable{
         cafe = new Room("in the cafe");
         basement = new Room("in the basement");
         
+        monTowards = new Monster(new Position(1,1),this, monstertowards);
+        monTowards2 = new Monster(new Position(1,1), this, monsterimage);
+        monTowards3 = new Monster(new Position(4,4), this, monstertowards);
+        
+    	oEast = new Exit(new Position(4,8), this, "east", pub);
+		oWest = new Exit(new Position(4,1), this, "west", theatre);
+		oSouth = new Exit(new Position(8,4), this, "south", lab);
+		oUp = new Exit(new Position(3,3), this, "up", cafe);
+		oDown = new Exit(new Position(6,6), this, "down", basement);
+		tEast = new Exit(new Position(4,8), this, "east", outside);
+		pWest = new Exit(new Position(4,1), this, "west", outside);
+		lNorth = new Exit(new Position(1,4), this, "north", outside);
+		lWest = new Exit(new Position(4,1), this, "west", office);
+		ofEast = new Exit(new Position(4,8), this, "east", lab);
+		cDown = new Exit(new Position(6,6), this, "down", outside);
+		bUp = new Exit(new Position(3,3), this, "up", outside);
+		
+		basementItem = new Item(new Position(3,3), this, "apple");
+		
         // Initialise room exits
-   /*     outside.setExit(pub,"east");
-        outside.setExit(theatre,"west");
-        outside.setExit(lab,"south");
-        outside.setExit(cafe,"up");
-        outside.setExit(basement, "down");
-        theatre.setExit(outside, "east");
-        pub.setExit(outside,"west");
-        lab.setExit(outside,"north");
-        lab.setExit(office,"west");
-        office.setExit(lab,"east");
-        cafe.setExit(outside,"down");
-        basement.setExit(outside, "up");*/
+        outside.setExit(oEast);
+        outside.setExit(oWest);
+        outside.setExit(oSouth);
+        outside.setExit(oUp);
+        outside.setExit(oDown);
+        theatre.setExit(tEast);
+        pub.setExit(pWest);
+        lab.setExit(lNorth);
+        lab.setExit(lWest);
+        office.setExit(ofEast);
+        cafe.setExit(cDown);
+        basement.setExit(bUp);
+        //basement.addItem(basementItem);
         
-        //Add items to rooms
-     //   cafe.addItem(new Item("coffee", 1));
-     //   cafe.addItem(new Item("sandwich", 2));
-       
-      //Adding monsters to rooms
-     //  addMonstersToRoom(); //randomly adds monsters to all room 
+        //adding monster    
+        cafe.addMonster(monTowards);
+      //  lab.addMonster(monTowards3);
+        theatre.addMonster(monTowards);
+        monsters = new HashMap<Room, Monster>();
+        monsters.put(cafe, monTowards);
+       // monsters.put(lab, monTowards3);
+        monsters.put(theatre, monTowards);
+        initialRoom = outside;
+       previousRoom =  currentRoom = outside;
         
-        //initialize moves (for 'back' command as a stack with the first element as the first room)
-        moves = new Stack<Room>();
-        currentRoom = outside;  // start game outside
-        moves.push(currentRoom);
     }
     
     /**
      *  Main play routine.  Loops until end of play.
      */
     public void play(Position pos){      
+    	JOptionPane Jpane;
+		Jpane = new JOptionPane();
     	Avatar hero = movableTile.get(0);
-		
-		Position oldPosition = hero.getPosition();
-		
 		Position nextPos;
 		nextPos = hero.getNextPosition(pos);
 		
-		int nextPosRow;
-		int nextPosCol;
-		int foodCol;
-		int foodRow;
-		
-		int posRow;
-		int posCol;
-		for(int i = 1; i < movableTile.size(); i++){
-
-			nextPosRow = nextPos.getRow();
-			nextPosCol = nextPos.getCol();
-			
-			foodCol = pos.getCol();
-			foodRow = pos.getRow();
-			
-			posRow = foodRow-nextPosRow;
-			posCol = foodCol-nextPosCol;
-			
-		}
+		for(Exit e : currentRoom.getExit()){
+        	if(e.getPosition().equals(nextPos)){
+        		System.out.println(currentRoom);
+        		removeExits();
+        		this.previousRoom = currentRoom;
+        		currentRoom = e.getNextRoom();
+        		System.out.println(currentRoom);
+        	}
+        }
 		hero.setPosition(nextPos);
+			if(currentRoom.getMonster().size()!=0)
+			{
+				Avatar mon = movableTile.get(1);
+				Position monCurrent = mon.getPosition();
+							
+				Position monNextPosition = mon.getNextPosition(hero.getPosition());
+							
+					for(Exit e : currentRoom.getExit()){
+						if(e.getPosition().equals(monNextPosition))
+						{
+						        monNextPosition = monCurrent;
+						        mon.setPosition(monNextPosition);
+						        removeMonster();
+						}
+						else
+						{
+						      	mon.setPosition(monNextPosition);
+						      	
+						}
+					}		
+					
+					if(mon.collidesWith(movableTile.get(0)))
+					{
+							hero.setPosition(new Position(1,1));
+							
+					     
+					        		currentRoom = initialRoom;
+					        		System.out.println(currentRoom);
+					        		Jpane.showMessageDialog(null, "You died. You have" + hero.getLives() + " lives left ");
+									System.out.println("Game Over");
+					        
+						
+					}
+					else if(movableTile.get(0).getLives()==0)
+					{
+						
+						Jpane.showMessageDialog(null, "Game Over. You have 0 lives LEFT !!");
+						System.out.println("Game Over");
+					}
+			}
+			else
+			{
+				removeMonster();
+			}
+	
+		
+		
+
 		syncItemMapAndField(movableTile);
 		if (checkWin()) {
 			setChanged();
 			notifyObservers("Congratulations: You win!");
 		}
-       // printWelcome();
-        
 
-       /* boolean finished = false;
-        while (! finished) {// Enter the main command loop.  Here we repeatedly read commands and
-        					// execute them until the game is over.
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-      } */ 
-        //System.out.println("Thank you for playing.  Good bye.");
+      
     }
 
-    /**
-     * Print out the opening message for the player.
-     */
-    private void printWelcome(){
-        System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
-        System.out.println();
-        System.out.println(currentRoom.getLongDescription());
-    }
 
-    /**
-     * Given a command, process (that is: execute) the command.
-     * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
-     */
-    private boolean processCommand(Command command){
-        boolean wantToQuit = false;
-
-        if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
-        String commandWord = command.getCommandWord();
-        
-        if (commandWord.equals("help")) //if use enters "help" it will call printHelp() 
-            printHelp();
-        else if (commandWord.equals("go")){//if use enters "go" it will call goRoom(command), 
-        								   // also pushing command on the commands stack
-            goRoom(command);
-            commands.push(command);
-            
-            while(!undoCommands.isEmpty()){ // emptys undoCommand in case undo was called without a redo,
-            	undoCommands.pop();			// it doesnt allow you to do redo if undo wasnt the last instruction
-            }
-        }else if (commandWord.equals("look")){ //if use enters "look" it will print the information 
-        									   //about the current room 
-            System.out.println(currentRoom.getLongDescription());
-        }
-        else if (commandWord.equals("undo")){ //if use enters "undo" 
-            if(moves.size() > 1){			  //check to see is the moves stack has any item
-                lastCommand = commands.pop();
-                if(lastCommand.getCommandWord().equals("pick")){ //if the LAST COMMAND was "pick" call unPick(Room)
-                	unPick(moves.peek());		// the parameter (moves.peek()) = a copy of the Room at the top 
-                								// of the stack which is the current room, so unPick(Room) knows
-                								// what room to add the item back
-                }else{
-                	moves.pop();				// if the LAST COMMAND was NOT "pick" pop from the moves stack
-                }
-                currentRoom = moves.peek(); 
-                undoCommands.push(lastCommand);
-                System.out.println(currentRoom.getLongDescription());
-            }
-            else
-                System.out.println("No where to go back to.");
-        }
-        else if (commandWord.equals("redo")){   // redo the last commands. 
-        	if(undoCommands.empty()){	//checks to see if undoCommands is empty
-                System.out.println("You need to undo before you can redo");
-        	}else{
-                lastCommand = undoCommands.pop(); 
-                processCommand(lastCommand); // calls processCommand(lastCommand) with the previous command
-        	}
-
-        }
-        else if (commandWord.equals("pick")){ //if user enters "pick" call pick(command)
-            pick(command);
-            commands.push(command);
-            
-            while(!undoCommands.isEmpty()){ // emptys undoCommand in case undo was called without a redo,
-            	undoCommands.pop();			// it doesnt allow you to do redo if undo wasnt the last instruction
-            }
-        }else if (commandWord.equals("inventory")){
-        	if(inventory.isEmpty()){ //checks to see if inventory is empty
-        		System.out.println("You have no Items in your Inventory: ");
-        	}else{
-        		System.out.print("In your inventory you have: ");
-        		for(Item item : inventory)
-        			System.out.print(item.getDescription() + " ");
-        		System.out.println();
-        	}
-            
-        }
-        else if (commandWord.equals("quit")) //if user enters "quit" call quit(command) which should return true
-        									 //if there was nothing else entered after "quit".
-            wantToQuit = quit(command);
-        
-        return wantToQuit;
-    }
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
-    private void printHelp(){
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        System.out.println(parser.getCommands());
-    }
-
-    /** 
-     * Try to go to one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command){
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-        String direction = command.getSecondWord();
-        
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-        
-        if (nextRoom == null) { //if nextRoom == null then the user either entered an invalid word or the direction 
-        	 					// the user entered is not an exit in the current room
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom; //changes the current room with the one the user entered
-            System.out.println(currentRoom.getLongDescription());
-            moves.push(currentRoom);
-        }
-    }
-
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command){
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        }
-        else {
-            return true;  // signal that we want to quit
-        }
-    }
      /**
       * "Pick was entered. Process to see what we can pick up"
       */
@@ -320,7 +225,7 @@ public class Game extends Observable{
                 System.out.println("There is no such item in this room.");
            
            }else{
-                inventory.add(currentRoom.getItem(item)); //add item to inventory
+               // inventory.add(currentRoom.getItem(item)); //add item to inventory
            		System.out.println("You added " + item + " to your inventory");
                 currentRoom.removeItem(item); //remove item from room
            }
@@ -340,18 +245,7 @@ public class Game extends Observable{
     	 }
      }
      
-     /**
-      *  Randomly decides to add monsters to all room
-      */
-  /*   private void addMonstersToRoom(){
- 		Random r = new Random();
- 		this.theatre.set_number_of_monster(r.nextInt(2));
- 		this.pub.set_number_of_monster(r.nextInt(2));
- 		this.cafe.set_number_of_monster(r.nextInt(1));
- 		this.lab.set_number_of_monster(r.nextInt(3));
- 		this.basement.set_number_of_monster(r.nextInt(2));
- 		this.office.set_number_of_monster(r.nextInt(2));
- 	} */
+
      
      public int getWidth(){
  		return WIDTH;
@@ -412,42 +306,167 @@ public class Game extends Observable{
 	
 	protected void populateItemMap(){
 		for(int row = 0; row<HEIGHT; row++){
-		for(int col =0; col<WIDTH; col++){
-			if(row == 0 || col == 0 || row == HEIGHT-1 || col == WIDTH-1){
-				itemMap[row][col] =new Wall(new Position(row,col),this, wallImage);
-			}else{
-				itemMap[row][col] =new Tile(new Position(row,col),this);
+			for(int col =0; col<WIDTH; col++){
+				if(row == 0 || col == 0 || row == HEIGHT-1 || col == WIDTH-1){
+					itemMap[row][col] =new Wall(new Position(row,col),this);
+				}else{
+					itemMap[row][col] =new Tile(new Position(row,col),this);
+				}
 			}
+		}	
+
+        createRooms();
+       
+        
+
+        movableTile.add(new Player(new Position(5,4), this, 5));
+		for(Monster M: monsters.values())
+		{
+			movableTile.add(M);
 		}
-	}
-
-
-	movableTile.add(new Player(new Position(3,3), this, playerImage, 1));
-
-	//movableTile.add(new PlayerBlack(startTilesP2, this, "playerBlack"));
-	
+		
 	}
 	
 	
+	/**
+	public void monOnTile()
+	{
+
+		if(movableTile.size()==1)
+		 {
+		   if(!currentRoom.getMonster().isEmpty()&&!currentRoomChanged())
+	        {
+	        
+			  	displayMonster();
+	        }
+	        else if(!currentRoom.getMonster().isEmpty()&& currentRoomChanged())
+	        {
+	        	System.out.println("Runing");
+	        	displayMonster();
+	        }
+		 }
+		 else if(movableTile.size()>=2 && movableTile.get(2) instanceof Monster)
+		 {
+			 System.out.println("Monster Already in room");
+		 }
+		 else if(currentRoomChanged() && movableTile.size()>=2)
+		 {
+			 displayMonster();
+		 }
+
+	}
 	
+	public void removeMonTile()
+	{
+		movableTile.remove(1);
+	}
+	
+	public void displayMonster()
+	{
+		if(movableTile.size()>=2)
+		{
+			movableTile.remove(1);
+		}
+		if(movableTile.size()==1)
+		{
+			System.out.println("Monster Disp");
+			movableTile.add(monsters.get(currentRoom));	
+		}
+
+	}
+	
+	**/
+	
+	/**
+	 * Tells if the room has changed or not.
+	 * @return
+	 */
+	public boolean currentRoomChanged()
+	{
+		Room r = previousRoom; 
+		if(this.currentRoom != r)
+		{
+				return true;
+		}
+		else 
+		{
+			return false;
+		}
+		
+	}
 	public void syncItemMapAndField(ArrayList<Avatar> movableTile){
-		LinkedList<Tile> tiles = new LinkedList<Tile>();
+		for(Exit e : currentRoom.getExit()){
+        	itemMap[e.getPosition().getRow()][e.getPosition().getCol()] = e;
+        }
+
+		
 		for(int row = 0; row < HEIGHT; row++){
 			for(int col = 0; col < WIDTH; col++){
 				playingField[row][col] = itemMap[row][col];
 			}
 		}
-		
+		/**
 		for(Avatar mt: movableTile){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
 			// only place if alive
-			if (mt.getLives() != 0) {
+			if (mt.getLives() != 0 && mt instanceof Player) {
 				playingField[mt.getPosition().getRow()][mt.getPosition().getCol()] = mt;
 				
-				//playingField[mT.getPosition().getRow()][mT.getPosition().getCol()] = mT; 
 			}
 		}
+		**/
+		for(Avatar m: movableTile){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
+			// only place if alive
+
+			if (currentRoom.getMonster().size()!=0 && m instanceof Monster && (m == currentRoom.getMonster().get(0)) ){
+				
+				playingField[m.getPosition().getRow()][m.getPosition().getCol()] = m;				
+			}
+			if (m.getLives() != 0 && m instanceof Player) {
+				playingField[m.getPosition().getRow()][m.getPosition().getCol()] = m;
+				
+			}
+		}
+		
+				
+		
+		
+		for(Exit e : currentRoom.getExit()){
+        	itemMap[e.getPosition().getRow()][e.getPosition().getCol()] = e;
+        }
+
+        
 		setChanged();
 		notifyObservers("update");
+	}
+	
+	public void removeExits(){
+		for(int row = 0; row < HEIGHT; row++){
+			for(int col = 0; col < WIDTH; col++){
+				if(itemMap[row][col] instanceof Exit){
+					itemMap[row][col] = new Tile(new Position(row,col), this);
+				}
+			}
+		}
+	}
+
+	public void removeMonster(){
+
+		for(int row = 0; row < HEIGHT; row++){
+			for(int col = 0; col < WIDTH; col++){
+				if(itemMap[row][col] instanceof Monster){
+					itemMap[row][col] = new Tile(new Position(row,col), this);
+				}
+			}
+		}
+	
+	}
+	
+	/**
+	 * returns the Hero of the current game
+	 * @return Hero
+	 */
+	public Player getUser() {
+		return (Player) movableTile.get(0);
 	}
 
 	public void resetPlayingField() {

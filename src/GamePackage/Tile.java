@@ -29,6 +29,7 @@ public class Tile extends JButton {
 	
 	private ImageIcon image; 
 	private boolean accessible;
+	public Avatar A;
 	
 	/**
 	 * the blankTileImage represents an instance of Tile

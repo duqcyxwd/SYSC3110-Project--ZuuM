@@ -17,10 +17,10 @@ public class Item extends Tile{
     /**
      * Constructor for objects of class Items
      */
-    public Item(Position position, Game game, ImageIcon image, String description, int weight){
-    	super(position, game, image);
+    public Item(Position position, Game game, String description){
+    	super(position, game);
         this.description = description;
-        this.weight = weight;
+        //this.weight = weight;
     }
 
     /**

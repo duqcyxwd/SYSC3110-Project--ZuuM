@@ -86,7 +86,6 @@ public class GameView implements Observer {
 			for (int col = 0; col < game.getWidth(); col++) {
 				tile = game.getTile(new Position(row,col));
 				// if this tile has no listeners, add one
-				System.out.println(tile);
 				if (tile.getActionListeners().length == 0) {
 					tile.addActionListener(handler);
 				}
@@ -145,10 +144,5 @@ public class GameView implements Observer {
 		if (str.equals("update")) updateView();
 		else handleGameOver(str);
 	}
-	
-	public static void main(String[] args) {
-		Game g = new Game();
-		@SuppressWarnings("unused")
-		GameView game = new GameView(g);
-	}
+
 }

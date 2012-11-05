@@ -1,8 +1,8 @@
 package GamePackage;
 import java.util.List;
+import java.util.Random;
 
-import javax.swing.ImageIcon;
-
+import javax.swing.*;
 
 /**
  * The class Monster tells current location of each monsters in 
@@ -11,22 +11,30 @@ import javax.swing.ImageIcon;
  * @version Oct 23rd, 2012
  */
 
-public class Monster extends Avatar {
+public class Monster extends Avatar{
 	
 	
 	 /**
      * Constructor of the initialises location and place
      */
-	public Monster(Position position, Game game, ImageIcon image, int lives){ 
-		super(position, game, image, lives);
+	public Monster(Position position, Game game, ImageIcon image){ 
+		super(position, game, image, 1);
 	}
 	
 	
-
 	@Override
 	public boolean collidesWith(Avatar avatar) {
-		// TODO Auto-generated method stub
-		return false;
+		if(avatar.getLives()>0 && avatar.getPosition()==this.getPosition())
+		{
+			avatar.removeLife();
+		
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
+	
 
 }

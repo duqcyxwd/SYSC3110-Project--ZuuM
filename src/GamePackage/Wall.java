@@ -12,12 +12,14 @@ import javax.swing.ImageIcon;
  */
 @SuppressWarnings("serial")
 public class Wall extends Tile{
+	
+	protected static ImageIcon wallImage = new ImageIcon("img/black-tile.png");
 
 	/**
 	 * The constructor will create a wall, or in other words a tile that is not accessible
 	 */
-	public Wall(Position position, Game game, ImageIcon image) {
-		super(position, game, image);
+	public Wall(Position position, Game game) {
+		super(position, game, wallImage);
 		setAccessible(false);
 	}
 	

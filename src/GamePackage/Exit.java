@@ -9,11 +9,11 @@ public class Exit extends Tile {
 	
 
 	protected static final ImageIcon northImage = new ImageIcon("img/northExit.png");
-	protected static final ImageIcon southImage = new ImageIcon("img/northExit.png");
-	protected static final ImageIcon westImage = new ImageIcon("img/northExit.png");
-	protected static final ImageIcon eastImage = new ImageIcon("img/northExit.png");
-	protected static final ImageIcon upImage = new ImageIcon("img/northExit.png");
-	protected static final ImageIcon downImage = new ImageIcon("img/northExit.png");
+	protected static final ImageIcon southImage = new ImageIcon("img/southExit.png");
+	protected static final ImageIcon westImage = new ImageIcon("img/westExit.png");
+	protected static final ImageIcon eastImage = new ImageIcon("img/eastExit.png");
+	protected static final ImageIcon upImage = new ImageIcon("img/upExit.png");
+	protected static final ImageIcon downImage = new ImageIcon("img/downExit.png");
 	
 	public Exit(Position position, Game game, String name, Room nextRoom){
 		super(position, game);

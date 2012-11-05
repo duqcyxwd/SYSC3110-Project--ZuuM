@@ -46,7 +46,7 @@ public class RoomCreator {
 		 */
 		for (int i = 0; i < listOfFiles.length; i++) {
 			if (listOfFiles[i].isFile()) {
-				System.out.println("File " + listOfFiles[i].getName());
+				//System.out.println("File " + listOfFiles[i].getName());
 				try{
 					FileInputStream fstream = new FileInputStream(listOfFiles[i]);
 
@@ -56,7 +56,7 @@ public class RoomCreator {
 
 
 					strLine = br.readLine();
-					System.out.println(strLine);
+					//System.out.println(strLine);
 					currentRoom = new Room(strLine);
 					currentRoom.setName(listOfFiles[i].getName());
 					rooms.add(currentRoom);
@@ -71,14 +71,14 @@ public class RoomCreator {
 
 			} 
 			else if (listOfFiles[i].isDirectory()) {
-				System.out.println("Directory " + listOfFiles[i].getName());
+				//System.out.println("Directory " + listOfFiles[i].getName());
 			}
 		}
 
-		System.out.println("\n\nNow in the rooms files, trying to create doors");
+		//System.out.println("\n\nNow in the rooms files, trying to create doors");
 		for(Room current: rooms){
 
-			System.out.println("\nFile " + current.getName());
+			//System.out.println("\nFile " + current.getName());
 			try{
 				FileInputStream fstream = new FileInputStream("rooms" + "//" +current.getName());
 
@@ -91,15 +91,15 @@ public class RoomCreator {
 				int counter = 0;
 				String[] lineArray;
 				while ((strLine = br.readLine()) != null){
-					System.out.println("\n" + strLine);
+					//System.out.println("\n" + strLine);
 					if(counter != 0){
 						lineArray = strLine.split(",");
 						if(lineArray[0].toCharArray()[0] == 'D'){
-							System.out.println("this is a door");
+							//System.out.println("this is a door");
 							for(Room next: rooms){
 								if(lineArray[3].equals(next.getName())){
-									//current.setExit(next, lineArray[1] + "," + lineArray[2]);
-									System.out.println("\n" + current.getName() + " now has exit " + next.getName() + " at " + lineArray[1] + "," + lineArray[2] );
+								//	current.setExit(next, lineArray[1] + "," + lineArray[2]);
+									//System.out.println("\n" + current.getName() + " now has exit " + next.getName() + " at " + lineArray[1] + "," + lineArray[2] );
 								}
 							}
 						}
