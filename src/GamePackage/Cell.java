@@ -20,7 +20,7 @@ public class Cell extends JButton {
 	public static final int WIDTH_OF_IMG = 30;
 	
 	private boolean accessible;
-	protected Position position;
+	private Position position;
 	private Game game;
 	
 	/**

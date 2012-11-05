@@ -143,6 +143,7 @@ public class Game extends Observable{
 		
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
+        		
         		System.out.println(currentRoom);
         		removeExits();
         		this.previousRoom = currentRoom;
@@ -286,66 +287,14 @@ public class Game extends Observable{
 				}
 			}
 		}	
-
-        //createRooms();
        
         movableTile.add(new Player(new Position(5,4), this, 5));
-		for(Monster M: monsters.values())
-		{
-			movableTile.add(M);
+		for(Monster m: monsters.values()){
+			movableTile.add(m);
 		}
 		
 	}
 	
-	
-	/*
-	public void monOnTile()
-	{
-
-		if(movableTile.size()==1)
-		 {
-		   if(!currentRoom.getMonster().isEmpty()&&!currentRoomChanged())
-	        {
-	        
-			  	displayMonster();
-	        }
-	        else if(!currentRoom.getMonster().isEmpty()&& currentRoomChanged())
-	        {
-	        	System.out.println("Runing");
-	        	displayMonster();
-	        }
-		 }
-		 else if(movableTile.size()>=2 && movableTile.get(2) instanceof Monster)
-		 {
-			 System.out.println("Monster Already in room");
-		 }
-		 else if(currentRoomChanged() && movableTile.size()>=2)
-		 {
-			 displayMonster();
-		 }
-
-	}
-	
-	public void removeMonTile()
-	{
-		movableTile.remove(1);
-	}
-	
-	public void displayMonster()
-	{
-		if(movableTile.size()>=2)
-		{
-			movableTile.remove(1);
-		}
-		if(movableTile.size()==1)
-		{
-			System.out.println("Monster Disp");
-			movableTile.add(monsters.get(currentRoom));	
-		}
-
-	}
-	
-	*/
 	
 	/**
 	 * Tells if the room has changed or not.
@@ -354,41 +303,28 @@ public class Game extends Observable{
 	public boolean currentRoomChanged()
 	{
 		Room r = previousRoom; 
-		if(this.currentRoom != r)
-		{
+		if(this.currentRoom != r){
 				return true;
 		}
-		else 
-		{
+		else{
 			return false;
 		}
 		
 	}
 	public void syncItemMapAndField(ArrayList<Avatar> movableTile){
+		
 		for(Exit e : currentRoom.getExit()){
         	itemMap[e.getPosition().getRow()][e.getPosition().getCol()] = e;
         }
-
-		
 		for(int row = 0; row < currentRoom.getHeight(); row++){
 			for(int col = 0; col < currentRoom.getWidth(); col++){
 				playingField[row][col] = itemMap[row][col];
 			}
 		}
-		/**
-		for(Avatar mt: movableTile){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
-			// only place if alive
-			if (mt.getLives() != 0 && mt instanceof Player) {
-				playingField[mt.getPosition().getRow()][mt.getPosition().getCol()] = mt;
-				
-			}
-		}
-		**/
 		for(Avatar m: movableTile){ //---------FIX THIS!!!--------------------------------------------------------------------------------------
 			// only place if alive
 
 			if (currentRoom.getMonster().size()!=0 && m instanceof Monster && (m == currentRoom.getMonster().get(0)) ){
-				
 				playingField[m.getPosition().getRow()][m.getPosition().getCol()] = m;				
 			}
 			if (m.getLives() != 0 && m instanceof Player) {
@@ -397,14 +333,10 @@ public class Game extends Observable{
 			}
 		}
 		
-				
-		
-		
 		for(Exit e : currentRoom.getExit()){
         	itemMap[e.getPosition().getRow()][e.getPosition().getCol()] = e;
         }
 
-        
 		setChanged();
 		notifyObservers("update");
 	}
@@ -420,7 +352,6 @@ public class Game extends Observable{
 	}
 
 	public void removeMonster(){
-
 		for(int row = 0; row < currentRoom.getHeight(); row++){
 			for(int col = 0; col < currentRoom.getWidth(); col++){
 				if(itemMap[row][col] instanceof Monster){
@@ -428,7 +359,6 @@ public class Game extends Observable{
 				}
 			}
 		}
-	
 	}
 	
 	public Room getCurrentRoom(){

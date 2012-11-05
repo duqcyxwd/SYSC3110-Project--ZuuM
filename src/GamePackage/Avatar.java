@@ -77,8 +77,8 @@ public abstract class Avatar extends Cell {
 		 */
 		int gotoRow = position.getRow();
 		int gotoCol = position.getCol();
-		int myRow = this.position.getRow();
-		int myCol = this.position.getCol();
+		int myRow = this.getPosition().getRow();
+		int myCol = this.getPosition().getCol();
 		if (myRow == gotoRow && myCol == gotoCol) {
 			throw new IllegalArgumentException("Cannot move to same position");
 		}
@@ -119,19 +119,19 @@ public abstract class Avatar extends Cell {
 		Position newPos;
 		switch (direction) {
 			case TOP:
-				newPos = new Position(position.getRow()-1, position.getCol());
+				newPos = new Position(this.getPosition().getRow()-1, this.getPosition().getCol());
 				if (!this.canMoveTo(newPos)) throw(new IllegalArgumentException("Move is not permitted"));
 				return newPos;
 			case BOTTOM:
-				newPos = new Position(position.getRow()+1, position.getCol());
+				newPos = new Position(this.getPosition().getRow()+1, this.getPosition().getCol());
 				if (!this.canMoveTo(newPos)) throw(new IllegalArgumentException("Move is not permitted"));
 				return newPos;
 			case LEFT:
-				newPos = new Position(position.getRow(), position.getCol()-1);
+				newPos = new Position(this.getPosition().getRow(), this.getPosition().getCol()-1);
 				if (!this.canMoveTo(newPos)) throw(new IllegalArgumentException("Move is not permitted"));
 				return newPos;
 			case RIGHT:
-				newPos = new Position(position.getRow(), position.getCol()+1);
+				newPos = new Position(this.getPosition().getRow(), this.getPosition().getCol()+1);
 				if (!this.canMoveTo(newPos)) throw(new IllegalArgumentException("Move is not permitted"));
 				return newPos;
 			default:
@@ -150,9 +150,9 @@ public abstract class Avatar extends Cell {
 				|| position.getRow() >= game.getCurrentRoom().getHeight() || position.getCol() >= game.getCurrentRoom().getWidth())
 			return false;
 		else if (!game.getCell(position).getAccessible()) return false;
-		else if ((Math.abs(position.getRow() - this.position.getRow()) == 1 && Math.abs(position.getCol() - this.position.getCol()) == 0))
+		else if ((Math.abs(position.getRow() - this.getPosition().getRow()) == 1 && Math.abs(position.getCol() - this.getPosition().getCol()) == 0))
 			return true; // moved one space vertically
-		else if ((Math.abs(position.getRow() - this.position.getRow()) == 0 && Math.abs(position.getCol() - this.position.getCol()) == 1))
+		else if ((Math.abs(position.getRow() - this.getPosition().getRow()) == 0 && Math.abs(position.getCol() - this.getPosition().getCol()) == 1))
 			return true; // moved one space horizontally
 		else return false;
 	}
