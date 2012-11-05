@@ -24,7 +24,8 @@ public class Game {
     private Stack < Command > commandsStackForRedo;     //save the command whatever we have undoed. 
     private Command lastCommand; ///save the last command you did and it is using for redo
     private List < Item > inventory;
-    public Room outside, theatre, pub, lab, office, cafe, basement;
+    private List < Room > roomList;
+    
     //Monster Variables
     private Map < Room, ArrayList < Monster >> monsters; // Will be used later
     private HashMap < Monster, Room > monster_map;
@@ -38,49 +39,26 @@ public class Game {
         inventory = new ArrayList < Item > ();
         commandsStack = new Stack < Command > ();
         commandsStackForRedo = new Stack < Command > ();
+        roomList = new ArrayList < Room > ();
     }
 
     /**
      * Create all the rooms and link their exits together.
      */
     private void createRooms() {
-
-        // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        cafe = new Room("in the cafe");
-        basement = new Room("in the basement");
-
-        // Initialize room exits
-        outside.setExit(pub, "east");
-        outside.setExit(theatre, "west");
-        outside.setExit(lab, "south");
-        outside.setExit(cafe, "up");
-        outside.setExit(basement, "down");
-        theatre.setExit(outside, "east");
-
-        pub.setExit(outside, "west");
-        lab.setExit(outside, "north");
-        lab.setExit(office, "west");
-        office.setExit(lab, "east");
-        cafe.setExit(outside, "down");
-        basement.setExit(outside, "up");
-
-        //Add items to rooms
-        cafe.addItem(new Item("coffee", 1));
-        cafe.addItem(new Item("sandwich", 2));
-
-        //Adding monsters to rooms
-        addMonstersToRoom(); //randomly adds monsters to all room 
-        //initialize moves (for 'back' command as a stack with the first element as the first room)
-        moves = new Stack < Room > ();
-        currentRoom = outside; // start game outside
+        InitializeGame newGame = new InitializeGame(this);
+        newGame.createRooms(currentRoom);
         moves.push(currentRoom);
     }
 
+    /*
+     *  Initialized RoomList
+     */
+    
+    public void initializeRoom(ArrayList<Room> a) {
+        this.roomList = a;
+    }
+    
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -284,16 +262,5 @@ public class Game {
         }
     }
 
-    /**
-     *  Randomly decides to add monsters to all room
-     */
-    private void addMonstersToRoom() {
-        Random r = new Random();
-        this.theatre.set_number_of_monster(r.nextInt(2));
-        this.pub.set_number_of_monster(r.nextInt(2));
-        this.cafe.set_number_of_monster(r.nextInt(1));
-        this.lab.set_number_of_monster(r.nextInt(3));
-        this.basement.set_number_of_monster(r.nextInt(2));
-        this.office.set_number_of_monster(r.nextInt(2));
-    }
+
 }
