@@ -51,7 +51,10 @@ public class Game extends Observable{
     protected static ImageIcon monsterimage = new ImageIcon("img/mon-tile.png");   
     protected static ImageIcon monstertowards = new ImageIcon("img/mon-towards.png");
 	
-        
+    private Stack< State > stateStack;
+    private Stack< State > redoStateStack;
+    private State currentState;
+    
     /**
      * Create the game and initialise its internal map.
      */
@@ -143,6 +146,12 @@ public class Game extends Observable{
 		Position nextPos;
 		nextPos = hero.getNextPosition(pos);
 		
+		
+	      // push the whole playingFile to cellsStack
+        stateStack.push(currentState);
+        
+        
+        
 		for(Exit e : currentRoom.getExit()){
         	if(e.getPosition().equals(nextPos)){
         		
@@ -395,4 +404,40 @@ public class Game extends Observable{
 
 	public void restartGame() {
 	}
+	
+	   /*
+     * undo method called by click button
+     * inventory
+     * life
+     * monster
+     */
+    public void undo() {
+        redoStateStack.push(currentState);
+        currentState = stateStack.pop();
+
+        
+        //call update method
+        /*
+         * 
+         * 
+         * 
+         */
+        
+    }
+    
+    /*
+     * redo mehtod called by click redo button
+     * if there is a new 
+     */
+    public void redo() {
+        stateStack.push(currentState);
+        currentState = redoStateStack.pop();
+           //call update method
+        /*
+         * 
+         * 
+         * 
+         */
+        
+    }
 }
