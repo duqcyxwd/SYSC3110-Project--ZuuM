@@ -152,7 +152,7 @@ public class GameView implements Observer {
                     }
 
                 }
-                if (tile[row][col].getCell() instanceof Player) {
+                if (tile[row][col].getCell() instanceof PlayerCell) {
                     tile[row][col].setImage(playerImage);
                 }
                 if (tile[row][col].getCell() instanceof Monster) {
@@ -163,7 +163,7 @@ public class GameView implements Observer {
                         tile[row][col].setImage(monster2Image);
                     }
                 }
-                if (tile[row][col].getCell() instanceof Wall) {
+                if (tile[row][col].getCell() instanceof WallCell) {
                     tile[row][col].setImage(wallImage);
                 }
                 gameField.add(tile[row][col]);

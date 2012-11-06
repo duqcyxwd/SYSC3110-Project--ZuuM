@@ -6,32 +6,37 @@ import java.util.List;
 
 public class State {
     //int life;
-    Cell[][] currentMap;
-    ArrayList< Item > inventory;
+    ArrayList< ItemCell > inventory;
+    Room room;
     
-    public State(Cell[][] currentMap, ArrayList<Item> inventory) {
-        this.currentMap = currentMap;
+    public State(Room room, ArrayList<ItemCell> inventory) {
         this.inventory = inventory;
+        this.room = room;
     }
     
     public State() {
-        
+                
     }
     
-    public ArrayList<Item> getInventory() {
+    public State(State state) {
+        this.inventory = state.getInventory();
+        this.room = state.getRoom();
+    }
+    
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public ArrayList<ItemCell> getInventory() {
         return inventory;
     }
 
-    public void setInventory(ArrayList<Item> inventory) {
+    public void setInventory(ArrayList<ItemCell> inventory) {
         this.inventory = inventory;
-    }
-
-    public void setCurrentMap(Cell[][] currentMap) {
-        this.currentMap = currentMap;
-    }
-    
-    public Cell[][] getCurrentMap() {
-        return currentMap;
     }
 
 }

@@ -23,7 +23,7 @@ import javax.swing.ImageIcon;
 public class Room {
     private String description;
     private ArrayList<Exit> exits;
-    private ArrayList<Item> items;
+    private ArrayList<ItemCell> items;
     private ArrayList<Monster> mon_list; // List of monsters in the room.
     private String name;
 	private static final int WIDTH = 11;
@@ -39,7 +39,7 @@ public class Room {
     public Room(String description) {
         this.description = description;
         exits = new ArrayList<Exit> ();
-        items = new ArrayList<Item> ();
+        items = new ArrayList<ItemCell> ();
         mon_list = new ArrayList < Monster > (); // List of monsters in the room
     }
 
@@ -76,14 +76,14 @@ public class Room {
      *
      * @param  accepts an item
      */
-    public void addItem(Item item) {
+    public void addItem(ItemCell item) {
         items.add(item);
     }
 
     /**
      * returns the string object associated with a certain object name (string)
      */
-    public ArrayList<Item> getItem(String item) {
+    public ArrayList<ItemCell> getItem(String item) {
         return items;
     }
 
@@ -134,7 +134,7 @@ public class Room {
     public String getLongDescription() {
         String itemsString = "";
         String ld = "";
-        if(items.size() > 0) for(Item item: items) //if items is not empty, it adds the items to a String
+        if(items.size() > 0) for(ItemCell item: items) //if items is not empty, it adds the items to a String
         	itemsString += item.getDescription() + " ";
         else itemsString = "none";
 

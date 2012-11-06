@@ -14,18 +14,18 @@ import javax.swing.ImageIcon;
  * @version Oct 23rd, 2012
  */
 
-public class Player extends Avatar {
+public class PlayerCell extends Avatar {
 	
 	protected static ImageIcon playerImage = new ImageIcon("img/red-tile.png");
 	
-	private List<Item> itemList;
+	private List<ItemCell> itemList;
 	
 	/**
      * Constructor of the initialises location and place
      */
-	public Player(Position position, Game game, int lives){ 
+	public PlayerCell(Position position, Game game, int lives){ 
 		super(position, game, lives);
-		itemList = new ArrayList<Item>();
+		itemList = new ArrayList<ItemCell>();
 	}
 	
 	
@@ -36,7 +36,7 @@ public class Player extends Avatar {
 		return false;
 	}
 	
-	public void addItem(Item i)
+	public void addItem(ItemCell i)
 	{
 		itemList.add(i);
 	}
@@ -46,7 +46,7 @@ public class Player extends Avatar {
 	{
 		String s = " | ";
 		
-		for(Item i : itemList)
+		for(ItemCell i : itemList)
 		{
 			s = s + i.toString() + " | ";
 		}

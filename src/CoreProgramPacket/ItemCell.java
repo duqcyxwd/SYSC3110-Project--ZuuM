@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  * @author Bruno Colantonio, Nishant Bhasin, Mohamed Ahmed, Yongquinchuan Du 
  * @version Oct 23rd, 2012
  */
-public class Item extends Cell{
+public class ItemCell extends Cell{
     // instance variables - replace the example below with your own
     private String description;
     private int weight;
@@ -18,7 +18,7 @@ public class Item extends Cell{
     /**
      * Constructor for objects of class Items
      */
-    public Item(Position position, Game game, String description){
+    public ItemCell(Position position, Game game, String description){
     	super(position, game);
         this.description = description;
         //this.weight = weight;

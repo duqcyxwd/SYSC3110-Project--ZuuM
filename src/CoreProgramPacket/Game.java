@@ -25,10 +25,10 @@ import UI_2DPacket.Tile;
 public class Game extends Observable {
 
     private Room currentRoom;
-    private List < Item > inventory;
+    //private List < Item > inventory;
     public Room outside, theatre, pub, lab, office, cafe, basement, previousRoom, initialRoom;
     public Exit oEast, oWest, oSouth, oUp, oDown, tEast, pWest, lNorth, lWest, ofEast, cDown, bUp;
-    public Item basementItem;
+    public ItemCell basementItem;
 
     // Monster Variables
     private HashMap < Room, Monster > monsters; // Will be used later
@@ -36,7 +36,6 @@ public class Game extends Observable {
     public Monster monTowards, monTowards2, monTowards3;
     protected Cell[][] playingField;
 
-    // protected Cell[][] itemMap;
     protected ArrayList < Avatar > movableTile;
     protected LinkedList < Tile[][] > prevItemMaps;
     protected LinkedList < ArrayList < Avatar >> prevMovableTiles;
@@ -54,13 +53,19 @@ public class Game extends Observable {
      */
     public Game() {
         createRooms();
-        inventory = new ArrayList < Item > ();
+        //inventory = new ArrayList < Item > ();
         playingField = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];
         movableTile = new ArrayList < Avatar > ();
         prevItemMaps = new LinkedList < Tile[][] > ();
         prevMovableTiles = new LinkedList < ArrayList < Avatar >> ();
         populateItemMap();
         syncItemMapAndField(movableTile);
+        
+        currentState = new State();
+        
+        stateStack = new Stack < State > ();
+        redoStateStack = new Stack < State >();
+        
     }
 
     /**
@@ -93,7 +98,7 @@ public class Game extends Observable {
         cDown = new Exit(new Position(7, 7), this, "down", outside);
         bUp = new Exit(new Position(3, 3), this, "up", outside);
 
-        basementItem = new Item(new Position(3, 3), this, "apple");
+        basementItem = new ItemCell(new Position(3, 3), this, "apple");
 
         // Initialise room exits
         outside.setExit(oEast);
@@ -138,10 +143,11 @@ public class Game extends Observable {
         //===========================================
         //this is using to temporarily avoid bug
         //currentState = new State(playingField, (ArrayList<Item>) inventory);
-/*        currentState = new State(new Cell[currentRoom.getHeight()][currentRoom.getWidth()], new ArrayList < Item > ());
+      
+        //currentState = new State(new Cell[currentRoom.getHeight()][currentRoom.getWidth()], new ArrayList < Item > ());
         currentState = new State();
         stateStack.push(currentState);
-        */
+        
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
 
@@ -226,7 +232,7 @@ public class Game extends Observable {
      * unPick is called when you picked up an item and you undo, removing the
      * item from inventory and putting it back in the room
      */
-    private void unPick(Room itemRoom) {
+/*    private void unPick(Room itemRoom) {
         int invSize = inventory.size();
         if(invSize >= 1) { // if inventory if greater than 1 (which it should
             // always be)
@@ -235,13 +241,13 @@ public class Game extends Observable {
             // to the room
             inventory.remove(invSize - 1); // remove item from inventory
         }
-    }
+    }*/
 
-    public Item getItem(Position position) throws IndexOutOfBoundsException {
+    public ItemCell getItem(Position position) throws IndexOutOfBoundsException {
         if(position.getRow() < 0 || position.getRow() >= currentRoom.getHeight()) throw new IndexOutOfBoundsException("Row out of bounds." + position.getRow());
         else if(position.getCol() < 0 || position.getCol() >= currentRoom.getWidth()) throw new IndexOutOfBoundsException("Col out of bounds" + position.getCol());
         else {
-            if(playingField[position.getRow()][position.getCol()] instanceof Item) return(Item) playingField[position.getRow()][position.getCol()];
+            if(playingField[position.getRow()][position.getCol()] instanceof ItemCell) return(ItemCell) playingField[position.getRow()][position.getCol()];
         }
         return null;
     }
@@ -260,7 +266,7 @@ public class Game extends Observable {
         else return playingField[position.getRow()][position.getCol()];
     }
 
-    public void placeItem(Item item) {
+    public void placeItem(ItemCell item) {
         playingField[item.getPosition().getRow()][item.getPosition().getCol()] = item;
     }
 
@@ -281,14 +287,14 @@ public class Game extends Observable {
         for(int row = 0; row < currentRoom.getHeight(); row++) {
             for(int col = 0; col < currentRoom.getWidth(); col++) {
                 if(row == 0 || col == 0 || row == currentRoom.getHeight() - 1 || col == currentRoom.getWidth() - 1) {
-                    playingField[row][col] = new Wall(new Position(row, col), this);
+                    playingField[row][col] = new WallCell(new Position(row, col), this);
                 } else {
                     playingField[row][col] = new Cell(new Position(row, col), this);
                 }
             }
         }
 
-        movableTile.add(new Player(new Position(5, 4), this, 5));
+        movableTile.add(new PlayerCell(new Position(5, 4), this, 5));
         for(Monster m: monsters.values()) {
             movableTile.add(m);
         }
@@ -325,7 +331,7 @@ public class Game extends Observable {
             if(currentRoom.getMonster().size() != 0 && m instanceof Monster && (m == currentRoom.getMonster().get(0))) {
                 playingField[m.getPosition().getRow()][m.getPosition().getCol()] = m;
             }
-            if(m.getLives() != 0 && m instanceof Player) {
+            if(m.getLives() != 0 && m instanceof PlayerCell) {
                 playingField[m.getPosition().getRow()][m.getPosition().getCol()] = m;
 
             }
@@ -358,7 +364,7 @@ public class Game extends Observable {
     public void removeAvatar() {
         for(int row = 0; row < currentRoom.getHeight(); row++) {
             for(int col = 0; col < currentRoom.getWidth(); col++) {
-                if(playingField[row][col] instanceof Monster || playingField[row][col] instanceof Player) {
+                if(playingField[row][col] instanceof Monster || playingField[row][col] instanceof PlayerCell) {
                     playingField[row][col] = new Cell(new Position(row, col), this);
                 }
             }
@@ -375,8 +381,8 @@ public class Game extends Observable {
      *
      * @return Hero
      */
-    public Player getUser() {
-        return(Player) movableTile.get(0);
+    public PlayerCell getUser() {
+        return(PlayerCell) movableTile.get(0);
     }
 
     public void resetPlayingField() {}

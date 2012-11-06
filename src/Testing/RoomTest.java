@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 
-import CoreProgramPacket.Item;
+import CoreProgramPacket.ItemCell;
 import CoreProgramPacket.Room;
 
 

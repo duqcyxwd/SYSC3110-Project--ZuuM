@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 
 import CoreProgramPacket.Game;
-import CoreProgramPacket.Player;
+import CoreProgramPacket.PlayerCell;
 
 public class ZuulGameView extends GameView {
 	
@@ -42,7 +42,7 @@ public class ZuulGameView extends GameView {
 	}
 	
 	public void updateComponents() {
-		Player player = game.getUser();
+		PlayerCell player = game.getUser();
 		lives.setText("Lives: " + player.getLives());
 		roomDescription.setText("Room: " + game.getCurrentRoom().getDescription());
 		inventory.setText("Inventory: " /*+ player.getDescription()*/);
