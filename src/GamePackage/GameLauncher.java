@@ -12,7 +12,10 @@ public class GameLauncher {
 	 * execute
 	 */
 	public static void main(String[] args) {
-			ZuulGameView.main(null);
+	        //ZuulGameView.main(null);
+			Game game = new Game();
+			ZuulGameView newGameView = new ZuulGameView(game);
+			
 			
 	}
 

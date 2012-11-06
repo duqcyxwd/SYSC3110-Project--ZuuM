@@ -34,11 +34,6 @@ public class ZuulGameView extends GameView {
 		addMoreComponents(more);
 	}
 	
-	public static void main(String[] args) {
-		Game g = new Game();
-		ZuulGameView game = new ZuulGameView(g);
-	}
-	
 	public void updateComponents() {
 		Player player = game.getUser();
 		lives.setText("Lives: " + player.getLives());
