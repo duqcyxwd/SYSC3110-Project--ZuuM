@@ -67,6 +67,10 @@ public class GameView implements Observer {
 
     protected static final ImageIcon wallImage = new ImageIcon(
             "img/black-tile.png");
+    
+    protected static final ImageIcon chickImage = new ImageIcon("img/chicken-tile.png");
+	
+    protected static final ImageIcon burgerimg = new ImageIcon("img/burger.jpg");	
 
     /**
      * Sets up the JFrame by defining properties and position on the screen. It
@@ -153,8 +157,18 @@ public class GameView implements Observer {
                             .equals("down")) {
                         tile[row][col].setIcon(downImage);
                     }
-
                 }
+                 if(tile[row][col].getCell() instanceof ItemCell){
+                	 System.out.println("item");
+    					if(tile[row][col].getCell().getName().equals("chicken")){
+    						tile[row][col].setImage(chickImage);
+    					}
+    					if(tile[row][col].getCell().getName().equals("burger")){
+    						tile[row][col].setImage(burgerimg);
+    					}
+
+    				}                
+               
                 if (tile[row][col].getCell() instanceof PlayerCell) {
                     tile[row][col].setImage(playerImage);
                 }

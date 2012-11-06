@@ -86,7 +86,7 @@ public class Room {
     /**
      * returns the string object associated with a certain object name (string)
      */
-    public ArrayList<ItemCell> getItem(String item) {
+    public ArrayList<ItemCell> getItem() {
         return items;
     }
 

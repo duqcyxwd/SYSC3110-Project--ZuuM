@@ -104,6 +104,13 @@ public class Game extends Observable {
 
         basementItem = new ItemCell(new Position(3, 3), this, "apple");
 
+        ItemCell chick = new ItemCell(new Position(1,5), this, "chicken");
+        ItemCell burger = new ItemCell(new Position (1,7), this, "burger");
+        ItemCell burg = new ItemCell(new Position (1,7), this, "burger");
+        cafe.addItem(chick);
+        cafe.addItem(burger);
+        basement.addItem(burg);
+
         // Initialise room exits
         outside.setExit(oEast);
         outside.setExit(oWest);
@@ -128,6 +135,8 @@ public class Game extends Observable {
         monsters.put(theatre, monTowards);
         initialRoom = outside;
         previousRoom = currentRoom = outside;
+//Adding items to cafe
+        
 
     }
 
@@ -156,6 +165,7 @@ public class Game extends Observable {
             if(e.getPosition().equals(nextPos)) {
 
                 //removeExits();
+            	removeItems();
                 exitRow = e.getPosition().getRow();
                 exitCol = e.getPosition().getCol();
                 heroRow = currentRoom.getHeight() - 1 - exitRow;
@@ -213,13 +223,13 @@ public class Game extends Observable {
     /**
      * "Pick was entered. Process to see what we can pick up"
      */
-    private void pick(Command command) {
-        if(!command.hasSecondWord()) { // if user forgot to enter what to pick
+    private void pick(ItemCell item) {
+       /* if(!command.hasSecondWord()) { // if user forgot to enter what to pick
             System.out.println("Pick what?");
             return;
         } else {
             String item = command.getSecondWord();
-            if(currentRoom.getItem(item) == null) { // if there is no such item
+            if(currentRoom.getItem() == null) { // if there is no such item
                 // in the current room
                 System.out.println("There is no such item in this room.");
 
@@ -229,7 +239,7 @@ public class Game extends Observable {
                 System.out.println("You added " + item + " to your inventory");
                 currentRoom.removeItem(item); // remove item from room
             }
-        }
+        }*/
     }
 
     /**
@@ -302,6 +312,15 @@ public class Game extends Observable {
         for(MonsterCell m: monsters.values()) {
             movableTile.add(m);
         }
+        
+        if(!currentRoom.getItem().isEmpty()) 
+		{
+			for(ItemCell i : currentRoom.getItem())
+			{
+				playingField[i.getPosition().getRow()][i.getPosition().getCol()] = i;//currentRoom.getItem().get(0);
+			System.out.println(currentRoom.getItem().get(0).getPosition().toString());
+			}
+		}
 
     }
 
@@ -321,8 +340,15 @@ public class Game extends Observable {
     }
 
     public void syncItemMapAndField(ArrayList < Avatar > movableTile) {
-
-        //playingField = new Cell[currentRoom.getWidth()][currentRoom.getHeight()];
+    	
+    	if(currentRoom.getItem()!=null){
+			for(ItemCell i : currentRoom.getItem()){
+				System.out.println(i.toString());
+				playingField[i.getPosition().getRow()][i.getPosition().getCol()] = i;
+			}
+		}
+        
+    	//playingField = new Cell[currentRoom.getWidth()][currentRoom.getHeight()];
         this.removeAvatar();
         for(Exit e: currentRoom.getExit()) {
             playingField[e.getPosition().getRow()][e.getPosition().getCol()] = e;
@@ -354,6 +380,16 @@ public class Game extends Observable {
             }
         }
     }
+    
+    public void removeItems(){
+		for(int row = 0; row < currentRoom.getHeight(); row++){
+			for(int col = 0; col < currentRoom.getWidth(); col++){
+				if(playingField[row][col] instanceof ItemCell){
+					playingField[row][col] = new Cell(new Position(row,col), this);
+				}
+			}
+		}
+	}
 
     public void removeMonster() {
         for(int row = 0; row < currentRoom.getHeight(); row++) {

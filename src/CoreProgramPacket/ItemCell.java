@@ -39,4 +39,8 @@ public class ItemCell extends Cell{
     public String getDescription(){
         return description;
     }
+    
+    public String getName(){
+        return description;
+    }
 }
