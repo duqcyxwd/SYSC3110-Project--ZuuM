@@ -164,7 +164,7 @@ public class Game extends Observable {
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
 
-                //removeExits();
+                removeExits();
             	removeItems();
                 exitRow = e.getPosition().getRow();
                 exitCol = e.getPosition().getCol();
