@@ -1,7 +1,8 @@
-package GamePackage;
+package CoreProgramPacket;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class State {
     //int life;
@@ -13,13 +14,20 @@ public class State {
         this.inventory = inventory;
     }
     
-    public void getLife() {
-        
+    public State() {
         
     }
     
-    public ArrayList getItems() {
+    public ArrayList<Item> getInventory() {
         return inventory;
+    }
+
+    public void setInventory(ArrayList<Item> inventory) {
+        this.inventory = inventory;
+    }
+
+    public void setCurrentMap(Cell[][] currentMap) {
+        this.currentMap = currentMap;
     }
     
     public Cell[][] getCurrentMap() {

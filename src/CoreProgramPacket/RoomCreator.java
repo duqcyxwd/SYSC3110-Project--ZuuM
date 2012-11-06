@@ -1,6 +1,6 @@
 
 
-package GamePackage;
+package CoreProgramPacket;
 
 import java.io.*;
 import java.util.*;

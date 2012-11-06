@@ -1,6 +1,7 @@
-package GamePackage;
+package CoreProgramPacket;
 
 import javax.swing.ImageIcon;
+
 
 public class Exit extends Cell {
 	

@@ -1,4 +1,4 @@
-package GamePackage;
+package UI_2DPacket;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -13,6 +13,10 @@ import java.util.Observer;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import CoreProgramPacket.*;
+
+import ControllerPacket.*;
 
 /**
  * The GameView displays a window with the graphical representation of a game.

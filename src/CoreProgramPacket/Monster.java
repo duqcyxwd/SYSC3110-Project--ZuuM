@@ -1,8 +1,9 @@
-package GamePackage;
+package CoreProgramPacket;
 import java.util.List;
 import java.util.Random;
 
 import javax.swing.*;
+
 
 /**
  * The class Monster tells current location of each monsters in 

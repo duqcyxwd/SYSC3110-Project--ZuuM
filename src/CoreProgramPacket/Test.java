@@ -1,4 +1,5 @@
-package GamePackage;
+package CoreProgramPacket;
+
 
 public class Test {
 

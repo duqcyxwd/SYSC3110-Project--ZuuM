@@ -1,6 +1,7 @@
-package GamePackage;
+package CoreProgramPacket;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
 
 
 /**

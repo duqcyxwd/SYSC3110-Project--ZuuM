@@ -10,8 +10,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 
-import GamePackage.Item;
-import GamePackage.Room;
+import CoreProgramPacket.Item;
+import CoreProgramPacket.Room;
 
 
 //public class RoomTest extends Room {

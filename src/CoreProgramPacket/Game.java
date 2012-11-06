@@ -1,14 +1,12 @@
-package GamePackage;
+package CoreProgramPacket;
 
 import java.util. * ;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import GamePackage.Position;
+import UI_2DPacket.Tile;
 
-import GamePackage.Avatar;
-import GamePackage.Tile;
 
 /**
  * This class is the main class of the "World of Zuul" application.
@@ -56,16 +54,11 @@ public class Game extends Observable {
      */
     public Game() {
         createRooms();
-        // parser = new Parser();
         inventory = new ArrayList < Item > ();
-        // commands = new Stack<Command>();
-        // undoCommands = new Stack<Command>();
         playingField = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];
-        // itemMap = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];
         movableTile = new ArrayList < Avatar > ();
         prevItemMaps = new LinkedList < Tile[][] > ();
         prevMovableTiles = new LinkedList < ArrayList < Avatar >> ();
-        // updateUndoLists();
         populateItemMap();
         syncItemMapAndField(movableTile);
     }
@@ -142,7 +135,13 @@ public class Game extends Observable {
         nextPos = hero.getNextPosition(pos);
 
         // push the whole playingFile to cellsStack
-        // stateStack.push(currentState);
+        //===========================================
+        //this is using to temporarily avoid bug
+        //currentState = new State(playingField, (ArrayList<Item>) inventory);
+/*        currentState = new State(new Cell[currentRoom.getHeight()][currentRoom.getWidth()], new ArrayList < Item > ());
+        currentState = new State();
+        stateStack.push(currentState);
+        */
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
 
@@ -277,12 +276,6 @@ public class Game extends Observable {
         return s;
     }
 
-    public void undoMove() {}
-
-    public void redoMove() {
-
-    }
-
     protected void populateItemMap() {
 
         for(int row = 0; row < currentRoom.getHeight(); row++) {
@@ -398,9 +391,9 @@ public class Game extends Observable {
      * undo method called by click button inventory life monster
      */
     public void undo() {
-        redoStateStack.push(currentState);
-        currentState = stateStack.pop();
-
+        /*redoStateStack.push(currentState);
+        currentState = stateStack.pop();*/
+        System.out.println("undo");
         // call update method
         /*
          *
@@ -414,9 +407,10 @@ public class Game extends Observable {
      * redo mehtod called by click redo button if there is a new
      */
     public void redo() {
-        stateStack.push(currentState);
-        currentState = redoStateStack.pop();
+   /*     stateStack.push(currentState);
+        currentState = redoStateStack.pop();*/
 
+        System.out.println("redo");
         // call update method
         /*
          *

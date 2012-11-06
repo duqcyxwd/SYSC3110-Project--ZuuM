@@ -1,4 +1,4 @@
-package GamePackage;
+package UI_2DPacket;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,6 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 
+import CoreProgramPacket.Game;
+import CoreProgramPacket.Player;
+
 public class ZuulGameView extends GameView {
 	
 	private JTextArea lives;
@@ -15,6 +18,7 @@ public class ZuulGameView extends GameView {
 	private JTextArea inventory;
 	private JButton undoButton;
 	private JButton redoButton;
+	
 
 	public ZuulGameView(Game game) {
 		super(game);
@@ -23,12 +27,15 @@ public class ZuulGameView extends GameView {
 		roomDescription.setPreferredSize(new Dimension(1,1));
 		inventory = new JTextArea();
 		inventory.setPreferredSize(new Dimension(1,1));
+		
 	    undoButton = new JButton("Undo");
 	    undoButton.setPreferredSize(new Dimension(1,1));
 	    undoButton.addActionListener(new UndoButtonHandler(game));
+	    
 	    redoButton = new JButton("Redo");
 	    redoButton.setPreferredSize(new Dimension(1,1));
 	    redoButton.addActionListener(new RedoButtonHandler(game));
+	    
 		updateComponents();
 		Component[] more = {undoButton, redoButton, lives, inventory, roomDescription};
 		addMoreComponents(more);
@@ -43,15 +50,14 @@ public class ZuulGameView extends GameView {
 	
 	private class UndoButtonHandler implements ActionListener {
 
-		Game game = null;
+		Game game;;
 
 		public UndoButtonHandler(Game game) {
-			super();
 			this.game = game;
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			game.undoMove();
+			game.undo();
 		}
 		
 	}
@@ -66,7 +72,7 @@ public class ZuulGameView extends GameView {
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			game.redoMove();
+			game.redo();
 		}
 		
 	}

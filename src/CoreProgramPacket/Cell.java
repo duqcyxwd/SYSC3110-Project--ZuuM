@@ -1,9 +1,10 @@
-package GamePackage;
+package CoreProgramPacket;
 import java.awt.Dimension;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
 
 /**
  * The Tile class has a position and an image. 

@@ -1,13 +1,17 @@
-package GamePackage;
+package ControllerPacket;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import UI_2DPacket.Tile;
+
+import CoreProgramPacket.Game;
 
 /*
  * This is the controller for the GameView. When a Tile is clicked, this calls
  * actionPerformed(...).
  */
-class GameController implements ActionListener {
+public class GameController implements ActionListener {
 
 	private Game game;
 

@@ -1,4 +1,4 @@
-package GamePackage;
+package CoreProgramPacket;
 
 public class Position {
 	private int row;

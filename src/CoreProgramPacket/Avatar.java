@@ -1,8 +1,9 @@
-package GamePackage;
+package CoreProgramPacket;
 
 import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
+
 
 /**
  * The Abstract Avatar class defines the controllable tile on the game: it is the only one that will be moved.
@@ -149,7 +150,8 @@ public abstract class Avatar extends Cell {
 		if (position.getRow() < 0 || position.getCol() < 0
 				|| position.getRow() >= game.getCurrentRoom().getHeight() || position.getCol() >= game.getCurrentRoom().getWidth())
 			return false;
-		else if (!game.getCell(position).getAccessible()) return false;
+		else if (!game.getCell(position).getAccessible()) 
+		    return false;
 		else if ((Math.abs(position.getRow() - this.getPosition().getRow()) == 1 && Math.abs(position.getCol() - this.getPosition().getCol()) == 0))
 			return true; // moved one space vertically
 		else if ((Math.abs(position.getRow() - this.getPosition().getRow()) == 0 && Math.abs(position.getCol() - this.getPosition().getCol()) == 1))

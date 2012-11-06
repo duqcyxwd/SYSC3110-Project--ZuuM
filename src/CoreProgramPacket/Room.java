@@ -1,7 +1,8 @@
-package GamePackage;
+package CoreProgramPacket;
 import java.util. * ;
 
 import javax.swing.ImageIcon;
+
 
 
 /**
