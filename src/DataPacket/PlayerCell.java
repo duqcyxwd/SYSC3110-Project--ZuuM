@@ -1,9 +1,14 @@
-package CoreProgramPacket;
+package DataPacket;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+
+import CoreProgramPacket.Avatar;
+import CoreProgramPacket.Game;
+import CoreProgramPacket.ItemCell;
+import CoreProgramPacket.Position;
 
 
 

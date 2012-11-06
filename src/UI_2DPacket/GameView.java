@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import CoreProgramPacket.*;
 
 import ControllerPacket.*;
+import DataPacket.MonsterCell;
+import DataPacket.PlayerCell;
 
 /**
  * The GameView displays a window with the graphical representation of a game.
@@ -155,7 +157,7 @@ public class GameView implements Observer {
                 if (tile[row][col].getCell() instanceof PlayerCell) {
                     tile[row][col].setImage(playerImage);
                 }
-                if (tile[row][col].getCell() instanceof Monster) {
+                if (tile[row][col].getCell() instanceof MonsterCell) {
                     if (tile[row][col].getCell().getName().equals("monster1")) {
                         tile[row][col].setImage(monster1Image);
                     } else if (tile[row][col].getCell().getName()

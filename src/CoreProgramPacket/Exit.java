@@ -2,6 +2,8 @@ package CoreProgramPacket;
 
 import javax.swing.ImageIcon;
 
+import DataPacket.Room;
+
 
 public class Exit extends Cell {
 	

@@ -5,6 +5,8 @@ package CoreProgramPacket;
 import java.io.*;
 import java.util.*;
 
+import DataPacket.Room;
+
 /**
  * The class RoomCreator creates a room based on text files in the 'room'
  * directory in the proect directory. Looks at the files for examples of the format

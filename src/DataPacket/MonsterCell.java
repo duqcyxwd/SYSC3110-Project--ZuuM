@@ -1,8 +1,12 @@
-package CoreProgramPacket;
+package DataPacket;
 import java.util.List;
 import java.util.Random;
 
 import javax.swing.*;
+
+import CoreProgramPacket.Avatar;
+import CoreProgramPacket.Game;
+import CoreProgramPacket.Position;
 
 
 /**
@@ -12,13 +16,13 @@ import javax.swing.*;
  * @version Oct 23rd, 2012
  */
 
-public class Monster extends Avatar{
+public class MonsterCell extends Avatar{
 	
 	private String name;
 	 /**
      * Constructor of the initialises location and place
      */
-	public Monster(Position position, Game game, String name){ 
+	public MonsterCell(Position position, Game game, String name){ 
 		super(position, game, 1);
 		this.name = name;
 	}

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 
 import CoreProgramPacket.ItemCell;
-import CoreProgramPacket.Room;
+import DataPacket.Room;
 
 
 //public class RoomTest extends Room {

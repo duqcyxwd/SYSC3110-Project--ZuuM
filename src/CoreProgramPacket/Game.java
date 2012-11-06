@@ -5,6 +5,10 @@ import java.util. * ;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import DataPacket.MonsterCell;
+import DataPacket.PlayerCell;
+import DataPacket.Room;
+import DataPacket.State;
 import UI_2DPacket.Tile;
 
 
@@ -31,14 +35,14 @@ public class Game extends Observable {
     public ItemCell basementItem;
 
     // Monster Variables
-    private HashMap < Room, Monster > monsters; // Will be used later
-    public HashMap < Monster, Room > monster_map;
-    public Monster monTowards, monTowards2, monTowards3;
+    private HashMap < Room, MonsterCell > monsters; // Will be used later
+    public HashMap < MonsterCell, Room > monster_map;
+    public MonsterCell monTowards, monTowards2, monTowards3;
+    
     protected Cell[][] playingField;
 
     protected ArrayList < Avatar > movableTile;
-    protected LinkedList < Tile[][] > prevItemMaps;
-    protected LinkedList < ArrayList < Avatar >> prevMovableTiles;
+    
     protected int undoIndex = 0;
     protected int undoCount = 0;
     protected static ImageIcon monsterimage = new ImageIcon("img/mon-tile.png");
@@ -56,8 +60,6 @@ public class Game extends Observable {
         //inventory = new ArrayList < Item > ();
         playingField = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];
         movableTile = new ArrayList < Avatar > ();
-        prevItemMaps = new LinkedList < Tile[][] > ();
-        prevMovableTiles = new LinkedList < ArrayList < Avatar >> ();
         populateItemMap();
         syncItemMapAndField(movableTile);
         
@@ -82,8 +84,8 @@ public class Game extends Observable {
         cafe = new Room("in the cafe");
         basement = new Room("in the basement");
 
-        monTowards = new Monster(new Position(1, 1), this, "monster1");
-        monTowards2 = new Monster(new Position(9, 9), this, "monster2");
+        monTowards = new MonsterCell(new Position(1, 1), this, "monster1");
+        monTowards2 = new MonsterCell(new Position(9, 9), this, "monster2");
 
         oEast = new Exit(new Position(5, 9), this, "east", pub);
         oWest = new Exit(new Position(5, 1), this, "west", theatre);
@@ -118,7 +120,7 @@ public class Game extends Observable {
         cafe.addMonster(monTowards);
         // lab.addMonster(monTowards3);
         theatre.addMonster(monTowards2);
-        monsters = new HashMap < Room, Monster > ();
+        monsters = new HashMap < Room, MonsterCell > ();
         monsters.put(cafe, monTowards);
         // monsters.put(lab, monTowards3);
         monsters.put(theatre, monTowards);
@@ -151,7 +153,7 @@ public class Game extends Observable {
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
 
-                removeExits();
+                //removeExits();
                 exitRow = e.getPosition().getRow();
                 exitCol = e.getPosition().getCol();
                 heroRow = currentRoom.getHeight() - 1 - exitRow;
@@ -295,7 +297,7 @@ public class Game extends Observable {
         }
 
         movableTile.add(new PlayerCell(new Position(5, 4), this, 5));
-        for(Monster m: monsters.values()) {
+        for(MonsterCell m: monsters.values()) {
             movableTile.add(m);
         }
 
@@ -328,7 +330,7 @@ public class Game extends Observable {
         for(Avatar m: movableTile) { // ---------FIX
             // THIS!!!--------------------------------------------------------------------------------------
             // only place if alive
-            if(currentRoom.getMonster().size() != 0 && m instanceof Monster && (m == currentRoom.getMonster().get(0))) {
+            if(currentRoom.getMonster().size() != 0 && m instanceof MonsterCell && (m == currentRoom.getMonster().get(0))) {
                 playingField[m.getPosition().getRow()][m.getPosition().getCol()] = m;
             }
             if(m.getLives() != 0 && m instanceof PlayerCell) {
@@ -354,7 +356,7 @@ public class Game extends Observable {
     public void removeMonster() {
         for(int row = 0; row < currentRoom.getHeight(); row++) {
             for(int col = 0; col < currentRoom.getWidth(); col++) {
-                if(playingField[row][col] instanceof Monster) {
+                if(playingField[row][col] instanceof MonsterCell) {
                     playingField[row][col] = new Cell(new Position(row, col), this);
                 }
             }
@@ -364,7 +366,7 @@ public class Game extends Observable {
     public void removeAvatar() {
         for(int row = 0; row < currentRoom.getHeight(); row++) {
             for(int col = 0; col < currentRoom.getWidth(); col++) {
-                if(playingField[row][col] instanceof Monster || playingField[row][col] instanceof PlayerCell) {
+                if(playingField[row][col] instanceof MonsterCell || playingField[row][col] instanceof PlayerCell) {
                     playingField[row][col] = new Cell(new Position(row, col), this);
                 }
             }

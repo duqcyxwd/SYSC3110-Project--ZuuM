@@ -1,7 +1,10 @@
-package CoreProgramPacket;
+package DataPacket;
 import java.util. * ;
 
 import javax.swing.ImageIcon;
+
+import CoreProgramPacket.Exit;
+import CoreProgramPacket.ItemCell;
 
 
 
@@ -24,7 +27,7 @@ public class Room {
     private String description;
     private ArrayList<Exit> exits;
     private ArrayList<ItemCell> items;
-    private ArrayList<Monster> mon_list; // List of monsters in the room.
+    private ArrayList<MonsterCell> mon_list; // List of monsters in the room.
     private String name;
 	private static final int WIDTH = 11;
 	private static final int HEIGHT = 11;
@@ -40,14 +43,14 @@ public class Room {
         this.description = description;
         exits = new ArrayList<Exit> ();
         items = new ArrayList<ItemCell> ();
-        mon_list = new ArrayList < Monster > (); // List of monsters in the room
+        mon_list = new ArrayList < MonsterCell > (); // List of monsters in the room
     }
 
 
     /**
      * Function to add monster to this room
      */
-    public void addMonster(Monster M) {
+    public void addMonster(MonsterCell M) {
        mon_list.add(M); // add a single new monster
     }
 
@@ -56,7 +59,7 @@ public class Room {
      * It returns the number of monsters present in this
      * room.
      */
-    public ArrayList<Monster> getMonster() {
+    public ArrayList<MonsterCell> getMonster() {
         return mon_list; // returns number of monsters in room
     }
 

@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JTextArea;
 
 import CoreProgramPacket.Game;
-import CoreProgramPacket.PlayerCell;
+import DataPacket.PlayerCell;
 
 public class ZuulGameView extends GameView {
 	
