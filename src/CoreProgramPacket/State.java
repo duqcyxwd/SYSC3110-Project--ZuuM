@@ -8,10 +8,12 @@ public class State {
     //int life;
     Cell[][] currentMap;
     ArrayList< Item > inventory;
+    private Room room;
     
-    public State(Cell[][] currentMap, ArrayList<Item> inventory) {
+    public State(Cell[][] currentMap, ArrayList<Item> inventory, Room room) {
         this.currentMap = currentMap;
         this.inventory = inventory;
+        this.room = room;
     }
     
     public State() {
@@ -34,4 +36,7 @@ public class State {
         return currentMap;
     }
 
+    public Room getCurretRoom() {
+        return this.room;
+    }
 }

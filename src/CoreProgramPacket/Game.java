@@ -61,8 +61,11 @@ public class Game extends Observable {
         prevMovableTiles = new LinkedList < ArrayList < Avatar >> ();
         populateItemMap();
         syncItemMapAndField(movableTile);
+        
+        stateStack = new Stack < State>();
+        redoStateStack = new Stack < State >();
+       
     }
-
     /**
      * Create all the rooms and link their exits together.
      */
@@ -137,11 +140,10 @@ public class Game extends Observable {
         // push the whole playingFile to cellsStack
         //===========================================
         //this is using to temporarily avoid bug
-        //currentState = new State(playingField, (ArrayList<Item>) inventory);
-/*        currentState = new State(new Cell[currentRoom.getHeight()][currentRoom.getWidth()], new ArrayList < Item > ());
-        currentState = new State();
+        currentState = new State(playingField, (ArrayList<Item>) inventory, currentRoom);
         stateStack.push(currentState);
-        */
+        System.out.println(stateStack.peek());
+        
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
 
@@ -391,8 +393,8 @@ public class Game extends Observable {
      * undo method called by click button inventory life monster
      */
     public void undo() {
-        /*redoStateStack.push(currentState);
-        currentState = stateStack.pop();*/
+        redoStateStack.push(currentState);
+        currentState = stateStack.pop();
         System.out.println("undo");
         // call update method
         /*
@@ -407,8 +409,8 @@ public class Game extends Observable {
      * redo mehtod called by click redo button if there is a new
      */
     public void redo() {
-   /*     stateStack.push(currentState);
-        currentState = redoStateStack.pop();*/
+        stateStack.push(currentState);
+        currentState = redoStateStack.pop();
 
         System.out.println("redo");
         // call update method
@@ -418,5 +420,15 @@ public class Game extends Observable {
          *
          */
 
+    }
+    /*
+     * update the variable in Game
+     * -inventory
+     * -currentRoom
+     * 
+     */
+    public void updateCurrentState() {
+        this.inventory = currentState.getInventory();
+        this.currentRoom = currentState.getCurretRoom();
     }
 }
