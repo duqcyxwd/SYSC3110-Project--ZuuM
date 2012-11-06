@@ -1,4 +1,4 @@
-package CoreProgramPacket;
+package DataPacket;
 
 public class Position {
 	private int row;

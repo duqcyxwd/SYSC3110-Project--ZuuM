@@ -7,8 +7,10 @@ import javax.swing.JOptionPane;
 
 import DataPacket.MonsterCell;
 import DataPacket.PlayerCell;
+import DataPacket.Position;
 import DataPacket.Room;
 import DataPacket.State;
+import UI_1DPacket.Command;
 import UI_2DPacket.Tile;
 
 

@@ -8,7 +8,6 @@ import javax.swing.ImageIcon;
 import CoreProgramPacket.Avatar;
 import CoreProgramPacket.Game;
 import CoreProgramPacket.ItemCell;
-import CoreProgramPacket.Position;
 
 
 

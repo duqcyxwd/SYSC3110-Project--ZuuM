@@ -1,6 +1,7 @@
-package CoreProgramPacket;
+package UI_1DPacket;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
 
 
 

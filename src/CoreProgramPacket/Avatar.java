@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 
+import DataPacket.Position;
+
 
 /**
  * The Abstract Avatar class defines the controllable tile on the game: it is the only one that will be moved.

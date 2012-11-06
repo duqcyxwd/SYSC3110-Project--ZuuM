@@ -2,6 +2,7 @@ package CoreProgramPacket;
 
 import javax.swing.ImageIcon;
 
+import DataPacket.Position;
 import DataPacket.Room;
 
 

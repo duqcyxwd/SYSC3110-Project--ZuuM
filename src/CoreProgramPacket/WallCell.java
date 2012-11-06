@@ -5,6 +5,8 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
+import DataPacket.Position;
+
 
 /**
  * The wall is a tile which blocks the path of an Avatar. It is pictorially represented

@@ -6,7 +6,6 @@ import javax.swing.*;
 
 import CoreProgramPacket.Avatar;
 import CoreProgramPacket.Game;
-import CoreProgramPacket.Position;
 
 
 /**

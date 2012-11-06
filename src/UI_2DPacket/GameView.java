@@ -19,6 +19,7 @@ import CoreProgramPacket.*;
 import ControllerPacket.*;
 import DataPacket.MonsterCell;
 import DataPacket.PlayerCell;
+import DataPacket.Position;
 
 /**
  * The GameView displays a window with the graphical representation of a game.

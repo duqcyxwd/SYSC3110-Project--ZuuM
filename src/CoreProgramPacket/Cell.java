@@ -5,6 +5,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import DataPacket.Position;
+
 
 /**
  * The Tile class has a position and an image. 

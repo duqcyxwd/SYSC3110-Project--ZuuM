@@ -1,6 +1,6 @@
 
 
-package CoreProgramPacket;
+package tryingEveryThing;
 
 import java.io.*;
 import java.util.*;
