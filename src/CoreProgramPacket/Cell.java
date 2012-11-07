@@ -38,10 +38,17 @@ public class Cell {
 	
 	
 	
+    /**
+     * @return String name gets the name of the cell
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * sets the name of the cell
+     * @param String name
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -114,6 +121,9 @@ public class Cell {
 		return adj;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return " "; // blank tile
 	}

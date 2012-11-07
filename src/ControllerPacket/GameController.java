@@ -7,7 +7,7 @@ import UI_2DPacket.Tile;
 
 import CoreProgramPacket.Game;
 
-/*
+/***
  * This is the controller for the GameView. When a Tile is clicked, this calls
  * actionPerformed(...).
  */
@@ -17,7 +17,7 @@ public class GameController implements ActionListener {
 
 	/**
 	 * 
-	 * @param game game to use as reference.
+	 * @param Game game to use as reference.
 	 */
 	public GameController(Game game) {
 		this.game = game;

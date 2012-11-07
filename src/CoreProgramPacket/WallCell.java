@@ -26,6 +26,9 @@ public class WallCell extends Cell{
 		setAccessible(false);
 	}
 	
+	/* (non-Javadoc)
+	 * @see CoreProgramPacket.Cell#toString()
+	 */
 	public String toString() {
 		return "X";
 	}

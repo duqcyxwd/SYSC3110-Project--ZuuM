@@ -20,6 +20,10 @@ public class ZuulGameView extends GameView {
 	private JButton redoButton;
 	
 
+	/**
+	 * initializes the games graphical view
+	 * @param game - the game with which this refers to
+	 */
 	public ZuulGameView(Game game) {
 		super(game);
 		lives = new JTextArea();
@@ -41,6 +45,9 @@ public class ZuulGameView extends GameView {
 		addMoreComponents(more);
 	}
 	
+	/* (non-Javadoc)
+	 * @see UI_2DPacket.GameView#updateComponents()
+	 */
 	public void updateComponents() {
 		PlayerCell player = game.getUser();
 		lives.setText("Lives: " + player.getLives());

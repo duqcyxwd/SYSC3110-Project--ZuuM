@@ -41,6 +41,9 @@ public class ItemCell extends Cell{
         return name;
     }
     
+    /* (non-Javadoc)
+     * @see CoreProgramPacket.Cell#toString()
+     */
     public String toString(){
     	return getName();
     }

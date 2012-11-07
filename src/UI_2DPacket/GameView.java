@@ -212,11 +212,17 @@ public class GameView implements Observer {
     /**
      * This function will change the value of any additional components that
      * have been added to the game, e.g. updating lives remaining on JTextArea.
+     *
+     *
+     * 
      */
     public void updateComponents() {
 
     }
 
+    /* (non-Javadoc)
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     */
     public void update(Observable o, Object arg) {
         if (!(arg instanceof String))
             return; // do nothing

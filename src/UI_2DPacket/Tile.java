@@ -109,6 +109,9 @@ public class Tile extends JButton {
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see java.awt.Component#toString()
+	 */
 	public String toString() {
 		return " "; // blank tile
 	}

@@ -36,6 +36,7 @@ public abstract class Avatar extends Cell {
 	 * @param position represents the position of the Avatar on the Game
 	 * @param game represents the game that is associated to this Avatar
 	 */
+	
 	public Avatar(Position position, Game game, int lives) {
 	    super(position,game);
 		this.game=game;
@@ -182,6 +183,9 @@ public abstract class Avatar extends Cell {
 	 * 
 	 * @return true if the number of lives has reached 0 or less
 	 */
+	/**
+	 * @return
+	 */
 	public boolean removeLife() {
 		lives--;
 		if (lives == 0) {
@@ -220,6 +224,10 @@ public abstract class Avatar extends Cell {
 		return points;
 	}
 	
+	/**
+	 * sets the number of points the player has
+	 * @param points
+	 */
 	public void setPoints(int points){
 		this.points = points;
 	}

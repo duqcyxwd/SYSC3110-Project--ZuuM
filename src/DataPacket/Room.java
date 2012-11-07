@@ -46,6 +46,9 @@ public class Room {
         mon_list = new ArrayList < MonsterCell > (); // List of monsters in the room
     }
 
+    /**
+     * @param room the room this refers to
+     */
     public Room(Room room) {
         this.exits = room.exits;
         this.items = room.items;
@@ -57,6 +60,9 @@ public class Room {
     
     /**
      * Function to add monster to this room
+     *
+     *
+     * @param Monster m - the monster to add
      */
     public void addMonster(MonsterCell M) {
        mon_list.add(M); // add a single new monster
@@ -66,6 +72,9 @@ public class Room {
      * Function to getMonsters in this room
      * It returns the number of monsters present in this
      * room.
+     *
+     *
+     * @return ArrayList<Monster> the list of monsters
      */
     public ArrayList<MonsterCell> getMonster() {
         return mon_list; // returns number of monsters in room
@@ -78,9 +87,7 @@ public class Room {
         return description;
     }
 
-    /**
-     * returns the Room object associated which a given exit string
-     */
+    
 
     /**
      * Add items to room
@@ -93,6 +100,9 @@ public class Room {
 
     /**
      * returns the string object associated with a certain object name (string)
+     *
+     *
+     * @return ArrayList<ItemCell> items
      */
     public ArrayList<ItemCell> getItem() {
         return items;
@@ -123,6 +133,10 @@ public class Room {
     
     
 
+    /**
+     * Gets the rooms exit
+     * @return ArrayList<Exit> exit
+     */
     public ArrayList<Exit> getExit() {
         return exits;
     }
@@ -157,22 +171,39 @@ public class Room {
         return ld;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     public String toString(){ // returns description of the room
     	return description;
     }
     
+    /**
+     * set the rooms name
+     * @param String name
+     */
     public void setName(String name){
     	this.name = name;
     }
     
+    /**
+     * returns room's name
+     * @return String name
+     */
     public String getName(){
 		return name;
     	
     }
+    /**
+     * @return int Width
+     */
     public int getWidth(){
   		return WIDTH;
   	}
   	
+  	/**
+  	 * @return int height
+  	 */
   	public int getHeight(){
   		return HEIGHT;
   	}
