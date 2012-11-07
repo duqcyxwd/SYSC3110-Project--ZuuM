@@ -35,6 +35,8 @@ public class Game extends Observable {
     public Room outside, theatre, pub, lab, office, cafe, basement, previousRoom, initialRoom;
     public Exit oEast, oWest, oSouth, oUp, oDown, tEast, pWest, lNorth, lWest, ofEast, cDown, bUp;
     public ItemCell basementItem;
+    
+    ArrayList< ItemCell > inventory;
 
     // Monster Variables
     private HashMap < Room, MonsterCell > monsters; // Will be used later
@@ -157,8 +159,7 @@ public class Game extends Observable {
         //this is using to temporarily avoid bug
         //currentState = new State(playingField, (ArrayList<Item>) inventory);
       
-        //currentState = new State(new Cell[currentRoom.getHeight()][currentRoom.getWidth()], new ArrayList < Item > ());
-        currentState = new State();
+        currentState = new State(this.currentRoom, this.inventory, this.movableTile);
         stateStack.push(currentState);
         
         for(Exit e: currentRoom.getExit()) {
@@ -432,37 +433,43 @@ public class Game extends Observable {
     }
 
     public void restartGame() {}
+    
+    
+    public void updateByState(){
+        Room room0 = currentState.getRoom();
+        ArrayList< ItemCell > inventory0 = currentState.getInventory();
+        ArrayList < Avatar > movableTile0 = currentState.getMovableTile();
+        this.currentRoom = new Room(room0);
+        this.inventory = inventory0;
+        this.movableTile =movableTile0;
+        syncItemMapAndField(movableTile);
+    }
 
     /*
      * undo method called by click button inventory life monster
      */
     public void undo() {
-        /*redoStateStack.push(currentState);
-        currentState = stateStack.pop();*/
-        System.out.println("undo");
-        // call update method
-        /*
-         *
-         *
-         *
-         */
-
+        if(!stateStack.isEmpty()) {
+            System.out.println("undo");
+            currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+            redoStateStack.push(currentState);
+            currentState = stateStack.pop();
+            updateByState();
+        }
     }
 
     /*
      * redo mehtod called by click redo button if there is a new
      */
     public void redo() {
-   /*     stateStack.push(currentState);
-        currentState = redoStateStack.pop();*/
-
-        System.out.println("redo");
-        // call update method
-        /*
-         *
-         *
-         *
-         */
-
+        if (!redoStateStack.isEmpty()) {
+            currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+            stateStack.push(currentState);
+            
+            System.out.println("redo");
+            currentState = redoStateStack.pop();
+            updateByState();
+        }
+        
     }
 }

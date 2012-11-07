@@ -46,7 +46,15 @@ public class Room {
         mon_list = new ArrayList < MonsterCell > (); // List of monsters in the room
     }
 
-
+    public Room(Room room) {
+        this.exits = room.exits;
+        this.items = room.items;
+        this.mon_list = room.mon_list;
+        this.name = room.name;
+        this.description = room.description;
+    }
+    
+    
     /**
      * Function to add monster to this room
      */

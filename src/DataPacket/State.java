@@ -3,6 +3,7 @@ package DataPacket;
 import java.util.ArrayList;
 import java.util.List;
 
+import CoreProgramPacket.Avatar;
 import CoreProgramPacket.ItemCell;
 
 
@@ -10,12 +11,23 @@ public class State {
     //int life;
     ArrayList< ItemCell > inventory;
     Room room;
+    ArrayList < Avatar > movableTile;
     
-    public State(Room room, ArrayList<ItemCell> inventory) {
+    
+    public State(Room room, ArrayList<ItemCell> inventory, ArrayList < Avatar > movableTile) {
         this.inventory = inventory;
         this.room = room;
+        this.movableTile = movableTile;
     }
     
+    public ArrayList<Avatar> getMovableTile() {
+        return movableTile;
+    }
+
+    public void setMovableTile(ArrayList<Avatar> movableTile) {
+        this.movableTile = movableTile;
+    }
+
     public State() {
                 
     }
