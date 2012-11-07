@@ -35,7 +35,7 @@ public class Game extends Observable {
     public Room outside, theatre, pub, lab, office, cafe, basement, previousRoom, initialRoom;
     public Exit oEast, oWest, oSouth, oUp, oDown, tEast, pWest, lNorth, lWest, ofEast, cDown, bUp;
     
-    ArrayList< ItemCell > inventory;
+    private ArrayList< ItemCell > inventory;
 
     // Monster Variables
     private HashMap < Room, MonsterCell > monsters; // Will be used later
