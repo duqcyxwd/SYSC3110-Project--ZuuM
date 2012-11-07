@@ -159,7 +159,6 @@ public class GameView implements Observer {
                     }
                 }
                  if(tile[row][col].getCell() instanceof ItemCell){
-                	 System.out.println("item");
     					if(tile[row][col].getCell().getName().equals("chicken")){
     						tile[row][col].setImage(chickImage);
     					}

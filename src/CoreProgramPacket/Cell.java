@@ -15,18 +15,16 @@ import DataPacket.Position;
  * @author 
  */
 @SuppressWarnings("serial")
-public class Cell extends JButton {
-	
-	
-	public static final int HEIGHT_OF_IMG = 30;
-
-	public static final int WIDTH_OF_IMG = 30;
+public class Cell {
 	
 	private boolean accessible;
 	private Position position;
 	private Game game;
 	
-	/**
+	private String name;
+
+
+    /**
 	 * The constructor will create a Tile at the positions of
 	 * the row and column. The image of a standard Tile is white.
 	 * @param position will set the position of the Tile
@@ -35,9 +33,19 @@ public class Cell extends JButton {
 	public Cell(Position position, Game game){
 		accessible = true;
 		this.game = game;
-		setPosition(position);
+        setPosition(new Position(position.getRow(), position.getCol()));
 	}
 	
+	
+	
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
 	/**
 	 * The method will return the Position of the Tile
 	 * @return the position of the tile

@@ -24,15 +24,27 @@ public class PlayerCell extends Avatar {
 	
 	private List<ItemCell> itemList;
 	
-	/**
+	private String name;
+
+
+
+    /**
      * Constructor of the initialises location and place
      */
 	public PlayerCell(Position position, Game game, int lives){ 
 		super(position, game, lives);
 		itemList = new ArrayList<ItemCell>();
+		name = "Player";
 	}
 	
-	
+	   
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
 	@Override
 	public boolean collidesWith(Avatar avatar) {

@@ -45,7 +45,7 @@ public class Game extends Observable {
     
     protected Cell[][] playingField;
 
-    protected ArrayList < Avatar > movableTile;
+    private ArrayList < Avatar > movableTile;
     
     protected int undoIndex = 0;
     protected int undoCount = 0;
@@ -54,7 +54,7 @@ public class Game extends Observable {
 
     private Stack < State > stateStack;
     private Stack < State > redoStateStack;
-    private State currentState;
+    //private State currentState;
 
     /**
      * Create the game and initialise its internal map.
@@ -67,7 +67,9 @@ public class Game extends Observable {
         populateItemMap();
         syncItemMapAndField(movableTile);
         
-        currentState = new State();
+        inventory =  new ArrayList < ItemCell>();
+        
+        //currentState = new State();
         
         stateStack = new Stack < State > ();
         redoStateStack = new Stack < State >();
@@ -134,7 +136,7 @@ public class Game extends Observable {
         monsters = new HashMap < Room, MonsterCell > ();
         monsters.put(cafe, monTowards);
         // monsters.put(lab, monTowards3);
-        monsters.put(theatre, monTowards);
+        monsters.put(theatre, monTowards2);
         initialRoom = outside;
         previousRoom = currentRoom = outside;
 //Adding items to cafe
@@ -158,9 +160,15 @@ public class Game extends Observable {
         //===========================================
         //this is using to temporarily avoid bug
         //currentState = new State(playingField, (ArrayList<Item>) inventory);
+        
+       //Room currentRoomCopy = new Room(currentRoom);
+        ArrayList<Avatar> movableCopy = (ArrayList<Avatar>) movableTile.clone();
       
-        currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+        State currentState = new State(this.currentRoom, this.inventory, movableCopy);
         stateStack.push(currentState);
+        System.out.println(currentState);
+        System.out.println("--------------------------------");
+        System.out.println(stateStack + "\n");
         
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
@@ -435,7 +443,7 @@ public class Game extends Observable {
     public void restartGame() {}
     
     
-    public void updateByState(){
+    public void updateByState(State currentState){
         Room room0 = currentState.getRoom();
         ArrayList< ItemCell > inventory0 = currentState.getInventory();
         ArrayList < Avatar > movableTile0 = currentState.getMovableTile();
@@ -443,18 +451,29 @@ public class Game extends Observable {
         this.inventory = inventory0;
         this.movableTile =movableTile0;
         syncItemMapAndField(movableTile);
+        System.out.println("test");
     }
 
     /*
      * undo method called by click button inventory life monster
      */
     public void undo() {
+        State currentState;
+        
+        currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+        
         if(!stateStack.isEmpty()) {
             System.out.println("undo");
+
+            System.out.println(stateStack);
+
+            System.out.println("----------------------------------------------------------------------");
             currentState = new State(this.currentRoom, this.inventory, this.movableTile);
             redoStateStack.push(currentState);
             currentState = stateStack.pop();
-            updateByState();
+            
+            System.out.println(stateStack);
+            updateByState(currentState);
         }
     }
 
@@ -463,12 +482,12 @@ public class Game extends Observable {
      */
     public void redo() {
         if (!redoStateStack.isEmpty()) {
-            currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+            State currentState = new State(this.currentRoom, this.inventory, this.movableTile);
             stateStack.push(currentState);
             
             System.out.println("redo");
             currentState = redoStateStack.pop();
-            updateByState();
+            updateByState(currentState);
         }
         
     }

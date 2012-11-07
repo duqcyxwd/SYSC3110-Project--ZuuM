@@ -15,9 +15,9 @@ public class State {
     
     
     public State(Room room, ArrayList<ItemCell> inventory, ArrayList < Avatar > movableTile) {
-        this.inventory = inventory;
+        this.inventory = (ArrayList<ItemCell>) inventory.clone();
         this.room = room;
-        this.movableTile = movableTile;
+        this.movableTile = (ArrayList<Avatar>) movableTile.clone();
     }
     
     public ArrayList<Avatar> getMovableTile() {
@@ -53,4 +53,21 @@ public class State {
         this.inventory = inventory;
     }
 
+    public String toString() {
+        String a = new String();
+        a += room.getDescription();
+        a += "\nInventory is : ";
+        if (!inventory.isEmpty()) {
+            for(ItemCell i : inventory) {
+                a+= (i.getDescription() + " ");
+            }
+        }
+        a += "\nmovableTile is: ";
+        if(!movableTile.isEmpty()) {
+            for(Avatar i : movableTile) {
+                a += (i.getPosition() + " ");
+            }
+        }
+        return a;
+    }
 }

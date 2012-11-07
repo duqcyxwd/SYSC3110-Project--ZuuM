@@ -37,7 +37,7 @@ public abstract class Avatar extends Cell {
 	 * @param game represents the game that is associated to this Avatar
 	 */
 	public Avatar(Position position, Game game, int lives) {
-		super(position,game);
+	    super(position,game);
 		this.game=game;
 		this.lives = lives;
 		this.points = 0;
@@ -223,6 +223,7 @@ public abstract class Avatar extends Cell {
 	public void setPoints(int points){
 		this.points = points;
 	}
+	
 	/**
 	 * determine what happens when the avatar collides with another
 	 * 
