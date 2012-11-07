@@ -59,7 +59,7 @@ public class State {
         a += "\nInventory is : ";
         if (!inventory.isEmpty()) {
             for(ItemCell i : inventory) {
-                a+= (i.getDescription() + " ");
+                a+= (i.getName() + " ");
             }
         }
         a += "\nmovableTile is: ";

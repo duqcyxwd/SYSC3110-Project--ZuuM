@@ -14,15 +14,15 @@ import DataPacket.Position;
  */
 public class ItemCell extends Cell{
     // instance variables - replace the example below with your own
-    private String description;
+    private String name;
     private int weight;
 
     /**
      * Constructor for objects of class Items
      */
-    public ItemCell(Position position, Game game, String description){
+    public ItemCell(Position position, Game game, String name){
     	super(position, game);
-        this.description = description;
+        this.name = name;
         //this.weight = weight;
     }
 
@@ -34,13 +34,14 @@ public class ItemCell extends Cell{
     }
     
     /**
-     * return the description of the Item
+     * return the name of the Item
      */
-    public String getDescription(){
-        return description;
-    }
     
     public String getName(){
-        return description;
+        return name;
+    }
+    
+    public String toString(){
+    	return getName();
     }
 }

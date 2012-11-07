@@ -34,14 +34,12 @@ public class Game extends Observable {
     //private List < Item > inventory;
     public Room outside, theatre, pub, lab, office, cafe, basement, previousRoom, initialRoom;
     public Exit oEast, oWest, oSouth, oUp, oDown, tEast, pWest, lNorth, lWest, ofEast, cDown, bUp;
-    public ItemCell basementItem;
     
     ArrayList< ItemCell > inventory;
 
     // Monster Variables
     private HashMap < Room, MonsterCell > monsters; // Will be used later
-    public HashMap < MonsterCell, Room > monster_map;
-    public MonsterCell monTowards, monTowards2, monTowards3;
+    public MonsterCell monTowards, monTowards2;
     
     protected Cell[][] playingField;
 
@@ -49,8 +47,6 @@ public class Game extends Observable {
     
     protected int undoIndex = 0;
     protected int undoCount = 0;
-    protected static ImageIcon monsterimage = new ImageIcon("img/mon-tile.png");
-    protected static ImageIcon monstertowards = new ImageIcon("img/mon-towards.png");
 
     private Stack < State > stateStack;
     private Stack < State > redoStateStack;
@@ -82,16 +78,16 @@ public class Game extends Observable {
     private void createRooms() {
 
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
-        cafe = new Room("in the cafe");
-        basement = new Room("in the basement");
+        outside = new Room("outside");
+        theatre = new Room("lecture theatre");
+        pub = new Room("campus pub");
+        lab = new Room("computing lab");
+        office = new Room("admin office");
+        cafe = new Room("cafe");
+        basement = new Room("basement");
 
         monTowards = new MonsterCell(new Position(1, 1), this, "monster1");
-        monTowards2 = new MonsterCell(new Position(9, 9), this, "monster2");
+        monTowards2 = new MonsterCell(new Position(1, 8), this, "monster2");
 
         oEast = new Exit(new Position(5, 9), this, "east", pub);
         oWest = new Exit(new Position(5, 1), this, "west", theatre);
@@ -106,14 +102,17 @@ public class Game extends Observable {
         cDown = new Exit(new Position(7, 7), this, "down", outside);
         bUp = new Exit(new Position(3, 3), this, "up", outside);
 
-        basementItem = new ItemCell(new Position(3, 3), this, "apple");
 
-        ItemCell chick = new ItemCell(new Position(1,5), this, "chicken");
-        ItemCell burger = new ItemCell(new Position (1,7), this, "burger");
-        ItemCell burg = new ItemCell(new Position (1,7), this, "burger");
-        cafe.addItem(chick);
-        cafe.addItem(burger);
-        basement.addItem(burg);
+        ItemCell shield = new ItemCell(new Position(2,8), this, "shield");
+        ItemCell life = new ItemCell(new Position (7,7), this, "life");
+        ItemCell key = new ItemCell(new Position (1,1), this, "key");
+        ItemCell food = new ItemCell(new Position (1,9), this, "food");
+        ItemCell trophy = new ItemCell(new Position (5,5), this, "trophy");
+        cafe.addItem(shield);
+        lab.addItem(life);
+        basement.addItem(key);
+        outside.addItem(food);
+        office.addItem(trophy);
 
         // Initialise room exits
         outside.setExit(oEast);
@@ -131,15 +130,13 @@ public class Game extends Observable {
         // basement.addItem(basementItem);
         // adding monster
         cafe.addMonster(monTowards);
-        // lab.addMonster(monTowards3);
         theatre.addMonster(monTowards2);
         monsters = new HashMap < Room, MonsterCell > ();
         monsters.put(cafe, monTowards);
-        // monsters.put(lab, monTowards3);
         monsters.put(theatre, monTowards2);
         initialRoom = outside;
         previousRoom = currentRoom = outside;
-//Adding items to cafe
+        //Adding items to cafe
         
 
     }
@@ -150,28 +147,28 @@ public class Game extends Observable {
     public void play(Position pos) {
         int exitCol, exitRow, heroCol, heroRow;
         Position roomChangePos = null;
-        JOptionPane Jpane;
-        Jpane = new JOptionPane();
         Avatar hero = movableTile.get(0);
         Position nextPos;
         nextPos = hero.getNextPosition(pos);
-
-        // push the whole playingFile to cellsStack
-        //===========================================
-        //this is using to temporarily avoid bug
-        //currentState = new State(playingField, (ArrayList<Item>) inventory);
-        
-       //Room currentRoomCopy = new Room(currentRoom);
-        ArrayList<Avatar> movableCopy = (ArrayList<Avatar>) movableTile.clone();
-      
-        State currentState = new State(this.currentRoom, this.inventory, movableCopy);
+        State currentState = new State(this.currentRoom, this.inventory, this.movableTile);
         stateStack.push(currentState);
-        System.out.println(currentState);
-        System.out.println("--------------------------------");
-        System.out.println(stateStack + "\n");
+        
+        for(ItemCell i: currentRoom.getItem()) {
+        	if(i.getPosition().equals(nextPos)) {
+        		pick(i);
+        		break;
+        	}
+        }
         
         for(Exit e: currentRoom.getExit()) {
             if(e.getPosition().equals(nextPos)) {
+            	if(e.getNextRoom().equals(office)){
+            		if(!((PlayerCell) hero).haveKey()){
+		    			setChanged();
+		    			notifyObservers("You need the key in the basement before you can enter!");
+		    			return;
+            		}
+            	}
 
                 removeExits();
             	removeItems();
@@ -190,33 +187,47 @@ public class Game extends Observable {
         if(roomChangePos != null) {
             nextPos = roomChangePos;
         }
+        if(((PlayerCell) hero).haveFood()){ // make guy go faster potentially
+        }
         hero.setPosition(nextPos);
         // something wrong with following logic but leave it for temperatory
         if(currentRoom.getMonster().size() != 0) {
-            Avatar mon = movableTile.get(1);
-            Position monCurrent = mon.getPosition();
-            Position monNextPosition = mon.getNextPosition(hero.getPosition());
-            for(Exit e: currentRoom.getExit()) {
-                if(e.getPosition().equals(monNextPosition)) {
-                    monNextPosition = monCurrent;
-                    mon.setPosition(monNextPosition);
-                    removeMonster();
-                } else {
-                    mon.setPosition(monNextPosition);
-                }
-            }
-
-            if(mon.collidesWith(movableTile.get(0))) {
-                hero.setPosition(new Position(1, 1));
-                currentRoom = initialRoom;
-                System.out.println(currentRoom);
-                Jpane.showMessageDialog(null, "You died. You have" + hero.getLives() + " lives left ");
-                System.out.println("Game Over");
-
-            } else if(movableTile.get(0).getLives() == 0) {
-                Jpane.showMessageDialog(null, "Game Over. You have 0 lives LEFT !!");
-                System.out.println("Game Over");
-            }
+        	for(MonsterCell m : currentRoom.getMonster()){
+	            Position monCurrent = m.getPosition();
+	            Position monNextPosition = m.getNextPosition(hero.getPosition());
+	            for(Exit e: currentRoom.getExit()) {
+	                if(e.getPosition().equals(monNextPosition)) {
+	                    monNextPosition = monCurrent;
+	                    m.setPosition(monNextPosition);
+	                    removeMonster();
+	                } else {
+	                    m.setPosition(monNextPosition);
+	                }
+	            }
+	
+	            if(m.collidesWith(hero)) {
+	            	if(((PlayerCell) hero).haveShield()){
+		            	m.setPosition(new Position(1, 1));
+		            	hero.addLife();
+		            	syncItemMapAndField(movableTile);
+		    			setChanged();
+		    			notifyObservers("The shield blocked you!");
+		    			return;
+	            	}else{
+		                hero.setPosition(new Position(5, 4));
+		                currentRoom = initialRoom;
+		                //System.out.println(currentRoom);
+						setChanged();
+						notifyObservers("You died. You have" + hero.getLives() + " lives left ");
+						return;
+	            	}
+	            }
+	            if(hero.getLives() == 0) {
+					setChanged();
+					notifyObservers("Game Over. You have 0 lives LEFT !!");
+					return;
+	            }
+        	}
         } else {
             removeMonster();
         }
@@ -233,38 +244,14 @@ public class Game extends Observable {
      * "Pick was entered. Process to see what we can pick up"
      */
     private void pick(ItemCell item) {
-       /* if(!command.hasSecondWord()) { // if user forgot to enter what to pick
-            System.out.println("Pick what?");
-            return;
-        } else {
-            String item = command.getSecondWord();
-            if(currentRoom.getItem() == null) { // if there is no such item
-                // in the current room
-                System.out.println("There is no such item in this room.");
-
-            } else {
-                // inventory.add(currentRoom.getItem(item)); //add item to
-                // inventory
-                System.out.println("You added " + item + " to your inventory");
-                currentRoom.removeItem(item); // remove item from room
-            }
-        }*/
+    	if(item.getName().equals("life")){
+    		getUser().addLife();
+    	}else{
+    		getUser().addItem(item);
+    		getCurrentRoom().removeItem(item);
+    		playingField[item.getPosition().getRow()][item.getPosition().getRow()] = new Cell(new Position(item.getPosition().getRow(),item.getPosition().getRow()), this);
+    	}
     }
-
-    /**
-     * unPick is called when you picked up an item and you undo, removing the
-     * item from inventory and putting it back in the room
-     */
-/*    private void unPick(Room itemRoom) {
-        int invSize = inventory.size();
-        if(invSize >= 1) { // if inventory if greater than 1 (which it should
-            // always be)
-            System.out.println("You unpicked " + inventory.get(invSize - 1).getDescription() + " and returned " + itemRoom);
-            currentRoom.addItem(inventory.get(invSize - 1)); // return the item
-            // to the room
-            inventory.remove(invSize - 1); // remove item from inventory
-        }
-    }*/
 
     public ItemCell getItem(Position position) throws IndexOutOfBoundsException {
         if(position.getRow() < 0 || position.getRow() >= currentRoom.getHeight()) throw new IndexOutOfBoundsException("Row out of bounds." + position.getRow());
@@ -317,17 +304,14 @@ public class Game extends Observable {
             }
         }
 
-        movableTile.add(new PlayerCell(new Position(5, 4), this, 5));
+        movableTile.add(new PlayerCell(new Position(5, 5), this, 3));
         for(MonsterCell m: monsters.values()) {
             movableTile.add(m);
         }
         
-        if(!currentRoom.getItem().isEmpty()) 
-		{
-			for(ItemCell i : currentRoom.getItem())
-			{
-				playingField[i.getPosition().getRow()][i.getPosition().getCol()] = i;//currentRoom.getItem().get(0);
-			System.out.println(currentRoom.getItem().get(0).getPosition().toString());
+        if(!currentRoom.getItem().isEmpty()) {
+			for(ItemCell i : currentRoom.getItem()){
+				playingField[i.getPosition().getRow()][i.getPosition().getCol()] = i;
 			}
 		}
 
@@ -352,12 +336,10 @@ public class Game extends Observable {
     	
     	if(currentRoom.getItem()!=null){
 			for(ItemCell i : currentRoom.getItem()){
-				System.out.println(i.toString());
 				playingField[i.getPosition().getRow()][i.getPosition().getCol()] = i;
 			}
 		}
         
-    	//playingField = new Cell[currentRoom.getWidth()][currentRoom.getHeight()];
         this.removeAvatar();
         for(Exit e: currentRoom.getExit()) {
             playingField[e.getPosition().getRow()][e.getPosition().getCol()] = e;
@@ -437,10 +419,19 @@ public class Game extends Observable {
     public void resetPlayingField() {}
 
     protected boolean checkWin() {
-        return false;
+    	if(getUser().haveTrophy()){
+    		return true;
+    	}
+    	return false;
     }
 
-    public void restartGame() {}
+    public void restartGame() {
+    	currentRoom = initialRoom;
+        playingField = new Cell[currentRoom.getHeight()][currentRoom.getWidth()];
+		movableTile = new ArrayList<Avatar>();
+		populateItemMap();
+		syncItemMapAndField(movableTile);
+    }
     
     
     public void updateByState(State currentState){
@@ -463,16 +454,16 @@ public class Game extends Observable {
         currentState = new State(this.currentRoom, this.inventory, this.movableTile);
         
         if(!stateStack.isEmpty()) {
-            System.out.println("undo");
+           // System.out.println("undo");
 
-            System.out.println(stateStack);
+           // System.out.println(stateStack);
 
             System.out.println("----------------------------------------------------------------------");
             currentState = new State(this.currentRoom, this.inventory, this.movableTile);
             redoStateStack.push(currentState);
             currentState = stateStack.pop();
             
-            System.out.println(stateStack);
+           // System.out.println(stateStack);
             updateByState(currentState);
         }
     }
@@ -485,7 +476,7 @@ public class Game extends Observable {
             State currentState = new State(this.currentRoom, this.inventory, this.movableTile);
             stateStack.push(currentState);
             
-            System.out.println("redo");
+            //System.out.println("redo");
             currentState = redoStateStack.pop();
             updateByState(currentState);
         }

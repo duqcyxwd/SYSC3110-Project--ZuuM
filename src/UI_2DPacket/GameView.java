@@ -39,38 +39,23 @@ public class GameView implements Observer {
 
     private Tile[][] tile;
 
-    protected static final ImageIcon northImage = new ImageIcon(
-            "img/northExit.png");
-
-    protected static final ImageIcon southImage = new ImageIcon(
-            "img/southExit.png");
-
-    protected static final ImageIcon westImage = new ImageIcon(
-            "img/westExit.png");
-
-    protected static final ImageIcon eastImage = new ImageIcon(
-            "img/eastExit.png");
-
+    protected static final ImageIcon northImage = new ImageIcon("img/northExit.png");
+    protected static final ImageIcon southImage = new ImageIcon("img/southExit.png");
+    protected static final ImageIcon westImage = new ImageIcon("img/westExit.png");
+    protected static final ImageIcon eastImage = new ImageIcon("img/eastExit.png");
     protected static final ImageIcon upImage = new ImageIcon("img/upExit.png");
-
-    protected static final ImageIcon downImage = new ImageIcon(
-            "img/downExit.png");
-
-    protected static final ImageIcon playerImage = new ImageIcon(
-            "img/red-Tile.png");
-
-    protected static final ImageIcon monster1Image = new ImageIcon(
-            "img/mon-towards.png");
-
-    protected static final ImageIcon monster2Image = new ImageIcon(
-            "img/mon-tile.png");
-
-    protected static final ImageIcon wallImage = new ImageIcon(
-            "img/black-tile.png");
+    protected static final ImageIcon downImage = new ImageIcon("img/downExit.png");
+    protected static final ImageIcon playerImage = new ImageIcon("img/player.png");
+    protected static final ImageIcon monster1Image = new ImageIcon("img/mon-towards.png");
+    protected static final ImageIcon monster2Image = new ImageIcon("img/mon-tile.png");
+    protected static final ImageIcon wallImage = new ImageIcon("img/black-tile.png");	
     
-    protected static final ImageIcon chickImage = new ImageIcon("img/chicken-tile.png");
-	
-    protected static final ImageIcon burgerimg = new ImageIcon("img/burger.jpg");	
+    protected static final ImageIcon lifeImage = new ImageIcon("img/life.png");
+    protected static final ImageIcon shieldImage = new ImageIcon("img/shield.png");
+    protected static final ImageIcon keyImage = new ImageIcon("img/key.png");	
+    protected static final ImageIcon foodImage = new ImageIcon("img/food.png");	
+    protected static final ImageIcon trophyImage = new ImageIcon("img/trophy.png");	
+    
 
     /**
      * Sets up the JFrame by defining properties and position on the screen. It
@@ -82,8 +67,7 @@ public class GameView implements Observer {
      */
     public GameView(Game game) {
         super();
-        tile = new Tile[game.getCurrentRoom().getHeight()][game
-                .getCurrentRoom().getWidth()];
+        tile = new Tile[game.getCurrentRoom().getHeight()][game.getCurrentRoom().getWidth()];
         this.game = game;
         game.addObserver(this);
         frame = new JFrame(game.getClass().getSimpleName());
@@ -142,30 +126,30 @@ public class GameView implements Observer {
                     tile[row][col].setImage(northImage);
                     if (tile[row][col].getCell().getName().equals("north")) {
                         tile[row][col].setIcon(northImage);
-                    } else if (tile[row][col].getCell().getName()
-                            .equals("south")) {
+                    } else if (tile[row][col].getCell().getName().equals("south")) {
                         tile[row][col].setIcon(southImage);
-                    } else if (tile[row][col].getCell().getName()
-                            .equals("west")) {
+                    } else if (tile[row][col].getCell().getName().equals("west")) {
                         tile[row][col].setIcon(westImage);
-                    } else if (tile[row][col].getCell().getName()
-                            .equals("east")) {
+                    } else if (tile[row][col].getCell().getName().equals("east")) {
                         tile[row][col].setIcon(eastImage);
                     } else if (tile[row][col].getCell().getName().equals("up")) {
                         tile[row][col].setIcon(upImage);
-                    } else if (tile[row][col].getCell().getName()
-                            .equals("down")) {
+                    } else if (tile[row][col].getCell().getName().equals("down")) {
                         tile[row][col].setIcon(downImage);
                     }
                 }
                  if(tile[row][col].getCell() instanceof ItemCell){
-    					if(tile[row][col].getCell().getName().equals("chicken")){
-    						tile[row][col].setImage(chickImage);
+    					if(tile[row][col].getCell().getName().equals("shield")){
+    						tile[row][col].setImage(shieldImage);
+    					}else if(tile[row][col].getCell().getName().equals("life")){
+    						tile[row][col].setImage(lifeImage);
+    					}else if(tile[row][col].getCell().getName().equals("key")){
+    						tile[row][col].setImage(keyImage);
+    					}else if(tile[row][col].getCell().getName().equals("food")){
+    						tile[row][col].setImage(foodImage);
+    					}else if(tile[row][col].getCell().getName().equals("trophy")){
+    						tile[row][col].setImage(trophyImage);
     					}
-    					if(tile[row][col].getCell().getName().equals("burger")){
-    						tile[row][col].setImage(burgerimg);
-    					}
-
     				}                
                
                 if (tile[row][col].getCell() instanceof PlayerCell) {
@@ -174,8 +158,7 @@ public class GameView implements Observer {
                 if (tile[row][col].getCell() instanceof MonsterCell) {
                     if (tile[row][col].getCell().getName().equals("monster1")) {
                         tile[row][col].setImage(monster1Image);
-                    } else if (tile[row][col].getCell().getName()
-                            .equals("monster2")) {
+                    } else if (tile[row][col].getCell().getName().equals("monster2")) {
                         tile[row][col].setImage(monster2Image);
                     }
                 }
@@ -203,7 +186,7 @@ public class GameView implements Observer {
         // either the game is won, or the game is lost
         updateView();
         // ask the user if he wants to play again, or quit this game.
-        String[] options = { "Play again", "Quit" };
+        String[] options = { "Play again", "Continue", "Quit" };
         int result = JOptionPane.showOptionDialog(null, str, "End of Game",
                 JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null,
                 options, options[0]);
@@ -216,7 +199,11 @@ public class GameView implements Observer {
             game.restartGame();
             updateView();
             // game.play();
-        } else {
+        } else if (result == 1) {
+            // if option 1 is chosen, continue game
+            updateView();
+            // game.play();
+        }else {
             // if any other option is chosen, show game select menu
             System.exit(0);
         }

@@ -45,7 +45,7 @@ public class ZuulGameView extends GameView {
 		PlayerCell player = game.getUser();
 		lives.setText("Lives: " + player.getLives());
 		roomDescription.setText("Room: " + game.getCurrentRoom().getDescription());
-		inventory.setText("Inventory: " /*+ player.getDescription()*/);
+		inventory.setText("Inventory: " + player.getItem());
 	}
 	
 	private class UndoButtonHandler implements ActionListener {

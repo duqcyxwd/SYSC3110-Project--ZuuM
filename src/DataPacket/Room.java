@@ -103,8 +103,8 @@ public class Room {
      * Remove items from room
      * @param  accepts an item
      */
-    public void removeItem(String description) {
-        items.remove(description);
+    public void removeItem(ItemCell item) {
+        items.remove(item);
     }
 
 
@@ -146,7 +146,7 @@ public class Room {
         String itemsString = "";
         String ld = "";
         if(items.size() > 0) for(ItemCell item: items) //if items is not empty, it adds the items to a String
-        	itemsString += item.getDescription() + " ";
+        	itemsString += item.getName() + " ";
         else itemsString = "none";
 
         ld = ld + "You are " + description + ".\n" + "Exits: " + getExitString() + ". The items in the room are : " + itemsString + "\n";

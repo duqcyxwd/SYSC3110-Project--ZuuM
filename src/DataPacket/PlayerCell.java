@@ -20,8 +20,6 @@ import CoreProgramPacket.ItemCell;
 
 public class PlayerCell extends Avatar {
 	
-	protected static ImageIcon playerImage = new ImageIcon("img/red-tile.png");
-	
 	private List<ItemCell> itemList;
 	
 	private String name;
@@ -49,6 +47,46 @@ public class PlayerCell extends Avatar {
 	@Override
 	public boolean collidesWith(Avatar avatar) {
 		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	public ArrayList<ItemCell> getItem(){
+		return (ArrayList<ItemCell>) itemList;
+	}
+	
+	public boolean haveShield(){
+		for(ItemCell i : itemList){
+			if(i.getName().equals("shield")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean haveFood(){
+		for(ItemCell i : itemList){
+			if(i.getName().equals("food")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean haveKey(){
+		for(ItemCell i : itemList){
+			if(i.getName().equals("key")){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean haveTrophy(){
+		for(ItemCell i : itemList){
+			if(i.getName().equals("trophy")){
+				return true;
+			}
+		}
 		return false;
 	}
 	
