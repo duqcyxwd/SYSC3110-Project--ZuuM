@@ -15,6 +15,12 @@ public class Position {
 		this.col = col;
 	}
 	
+   public Position(Position po)
+    {
+        this.row = po.getRow();
+        this.col = po.getCol();
+    }
+	
 	/**
 	 * Returns the row.
 	 * @return row

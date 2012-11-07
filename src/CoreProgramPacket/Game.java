@@ -35,7 +35,7 @@ public class Game extends Observable {
     public Room outside, theatre, pub, lab, office, cafe, basement, previousRoom, initialRoom;
     public Exit oEast, oWest, oSouth, oUp, oDown, tEast, pWest, lNorth, lWest, ofEast, cDown, bUp;
     
-    private ArrayList< ItemCell > inventory;
+    ArrayList< ItemCell > inventory;
 
     // Monster Variables
     private HashMap < Room, MonsterCell > monsters; // Will be used later
@@ -150,8 +150,12 @@ public class Game extends Observable {
         Avatar hero = movableTile.get(0);
         Position nextPos;
         nextPos = hero.getNextPosition(pos);
+        
+        
         State currentState = new State(this.currentRoom, this.inventory, this.movableTile);
         stateStack.push(currentState);
+        System.out.println(stateStack);
+        redoStateStack.clear();
         
         for(ItemCell i: currentRoom.getItem()) {
         	if(i.getPosition().equals(nextPos)) {
@@ -242,15 +246,20 @@ public class Game extends Observable {
 
     /**
      * "Pick was entered. Process to see what we can pick up"
+     *
+     *
+     * @param item
      */
     private void pick(ItemCell item) {
     	if(item.getName().equals("life")){
+    	    currentRoom.removeItem(item);
     		getUser().addLife();
     	}else{
     		getUser().addItem(item);
     		getCurrentRoom().removeItem(item);
-    		playingField[item.getPosition().getRow()][item.getPosition().getRow()] = new Cell(new Position(item.getPosition().getRow(),item.getPosition().getRow()), this);
     	}
+    	playingField[item.getPosition().getRow()][item.getPosition().getRow()] = new Cell(new Position(item.getPosition().getRow(),item.getPosition().getRow()), this);
+        
     }
 
     public ItemCell getItem(Position position) throws IndexOutOfBoundsException {
@@ -416,7 +425,7 @@ public class Game extends Observable {
         return(PlayerCell) movableTile.get(0);
     }
 
-    public void resetPlayingField() {}
+    //public void resetPlayingField() {}
 
     protected boolean checkWin() {
     	if(getUser().haveTrophy()){
@@ -438,9 +447,13 @@ public class Game extends Observable {
         Room room0 = currentState.getRoom();
         ArrayList< ItemCell > inventory0 = currentState.getInventory();
         ArrayList < Avatar > movableTile0 = currentState.getMovableTile();
+        
+        movableTile.get(0).setPosition(currentState.getPosition() );
+        
         this.currentRoom = new Room(room0);
         this.inventory = inventory0;
         this.movableTile =movableTile0;
+        
         syncItemMapAndField(movableTile);
         System.out.println("test");
     }
@@ -451,20 +464,20 @@ public class Game extends Observable {
     public void undo() {
         State currentState;
         
-        currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+       // currentState = new State(this.currentRoom, this.inventory, this.movableTile);
         
         if(!stateStack.isEmpty()) {
-           // System.out.println("undo");
+            System.out.println("undo");
 
            // System.out.println(stateStack);
 
-            System.out.println("----------------------------------------------------------------------");
-            currentState = new State(this.currentRoom, this.inventory, this.movableTile);
-            redoStateStack.push(currentState);
-            currentState = stateStack.pop();
+           // System.out.println("----------------------------------------------------------------------");
+           currentState = new State(this.currentRoom, this.inventory, this.movableTile);
+           redoStateStack.push(currentState);
+           currentState = stateStack.pop();
             
-           // System.out.println(stateStack);
-            updateByState(currentState);
+           System.out.println(stateStack);
+           updateByState(currentState);
         }
     }
 
@@ -476,7 +489,7 @@ public class Game extends Observable {
             State currentState = new State(this.currentRoom, this.inventory, this.movableTile);
             stateStack.push(currentState);
             
-            //System.out.println("redo");
+            System.out.println("redo");
             currentState = redoStateStack.pop();
             updateByState(currentState);
         }
